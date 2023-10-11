@@ -19,7 +19,7 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Test Button"
+        android:text="Chupa Aqui"
         tools:layout_editor_absoluteX="167dp"
         tools:layout_editor_absoluteY="476dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
