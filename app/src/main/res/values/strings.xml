@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Temax</string>
+    <string name="main_login">Log in</string>
 </resources>
