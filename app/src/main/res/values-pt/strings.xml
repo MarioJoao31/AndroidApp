@@ -2,4 +2,6 @@
 <resources>
     <string name="app_name">Temax</string>
     <string name="main_login">Entra</string>
+    <string name="main_registar">Regista-te</string>
+    <string name="register_button">Registar conta</string>
 </resources>
