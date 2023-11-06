@@ -72,9 +72,16 @@ class Register : AppCompatActivity() {
         }
     }
     fun registar_button(view: View){
-        if(verificationsRegister(emailEditText.text.toString(),
+
+
+
+        if (verificationsRegister(
+                emailEditText.text.toString(),
                 passwordEditText.text.toString(),
-                dateEditText.text.toString())) {
+                dateEditText.text.toString(),
+                contactEditText.text.toString(),
+                NameEditText.text.toString()
+            )) {
 
             /// codigo abaixo envia o request para o background
             val r = Runnable {
@@ -100,24 +107,40 @@ class Register : AppCompatActivity() {
         setResult(Activity.RESULT_OK, returnIntent)
     }
 
-    fun verificationsRegister(email: String, password: String, dateNasc: String ): Boolean{
+    fun verificationsRegister(email: String, password: String, dateNasc: String, contact: String, name: String): Boolean{
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+
             // Verifica se o email está vazio ou se não é um endereço de email válido.
             Toast.makeText(this, "Invalid Email", Toast.LENGTH_SHORT).show()
             return false
         }
+
         val passwordPattern = """^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=]).*$""".toRegex()
-        if (password.isEmpty() || password.length < 6 || !passwordPattern.matches(dateNasc)) {
+        if (password.isEmpty() || password.length < 6 || !passwordPattern.matches(password)) {
+
             // Verifica se a senha está vazia ou
             Toast.makeText(this, "Invalid Password", Toast.LENGTH_SHORT).show()
             return false
         }
 
-
         val datePattern = """^\d{4}-\d{2}-\d{2}$""".toRegex()
         if (dateNasc.isEmpty() || !datePattern.matches(dateNasc)) {
+
             Toast.makeText(this, "Invalid date of birth (must be in the format 'yyyy-MM-dd')", Toast.LENGTH_SHORT)
+            return false
+        }
+
+        val contactInt = contact.toIntOrNull()
+        if (contactInt == null || contact.length != 9) {
+
+            Toast.makeText(this, "Invalid Contact", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        if (name.isEmpty()) {
+
+            Toast.makeText(this, "Name Can`t be Null", Toast.LENGTH_SHORT).show()
             return false
         }
 
