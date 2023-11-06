@@ -17,6 +17,7 @@ class SelectTypeUser : AppCompatActivity() {
     }
 
     fun SelectBtTypeNotStudent (view: View){
-
+        val intent = Intent(this@SelectTypeUser, NotStudentSellOrRentOrBuy::class.java)
+        startActivityForResult(intent,1)
     }
 }
