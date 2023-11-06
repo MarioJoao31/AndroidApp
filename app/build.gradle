@@ -8,6 +8,9 @@ android {
     compileSdk 34
 
     defaultConfig {
+
+        //propriedade para poder accessar a variavel API_IP do Grade.Properties
+        buildConfigField "String", "API_IP", "\"${API_IP}\""
         applicationId "com.example.temax"
         minSdk 27
         targetSdk 34
@@ -15,6 +18,10 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        buildConfig true
     }
 
     buildTypes {

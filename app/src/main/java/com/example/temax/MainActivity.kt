@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
             jsonBody.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
 
         val  requestBuilder = Request.Builder()
-            .url("http://192.168.1.74:3000/users/login")
+            .url("http://${BuildConfig.API_IP}:3000/users/login")
             .post(requestBody)
 
         //headers que preciso para o Post

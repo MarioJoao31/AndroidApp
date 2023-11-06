@@ -46,8 +46,10 @@ class Register : AppCompatActivity() {
         val requestBody =
             jsonBody.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
 
+
+
         val  requestBuilder = Request.Builder()
-            .url("http://192.168.1.74:3000/users/createUser")
+            .url("http://${BuildConfig.API_IP}:3000/users/createUser")
             .post(requestBody)
 
         //headers que preciso para o Post
@@ -62,8 +64,6 @@ class Register : AppCompatActivity() {
 
     }
     fun registar_button(view: View){
-
-
 
         if (verificationsRegister(
                 emailEditText.text.toString(),
