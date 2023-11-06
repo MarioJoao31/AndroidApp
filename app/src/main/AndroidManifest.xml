@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Temax"
         tools:targetApi="31">
         <activity
+            android:name=".SelectTypeUser"
+            android:exported="false" />
+        <activity
             android:name=".Register"
             android:exported="false" />
         <activity
