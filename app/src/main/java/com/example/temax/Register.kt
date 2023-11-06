@@ -12,8 +12,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.Response
-import java.io.IOException
+
 
 class Register : AppCompatActivity() {
 
@@ -63,13 +62,7 @@ class Register : AppCompatActivity() {
 
         val request = requestBuilder.build()
 
-        try {
-            val response: Response = client.newCall(request).execute()
-        } catch (e: IOException) {
-            e.printStackTrace()
-            Log.d("Error",e.toString())
 
-        }
     }
     fun registar_button(view: View){
 
@@ -93,6 +86,8 @@ class Register : AppCompatActivity() {
 
             Toast.makeText(this,"boa criaste conta",Toast.LENGTH_SHORT).show()
 
+            end()
+            finish()
 
 
         }
@@ -102,8 +97,7 @@ class Register : AppCompatActivity() {
     fun end(){
         val returnIntent = Intent()
         // não esquecer de por sempre o to string porque senão vai retornal o editavel em vez de string
-        //TODO: por aqui a variavel para passar para o login
-        returnIntent.putExtra("email", emailEditText.text)
+        returnIntent.putExtra("email", emailEditText.text.toString())
         setResult(Activity.RESULT_OK, returnIntent)
     }
 
@@ -127,7 +121,7 @@ class Register : AppCompatActivity() {
         val datePattern = """^\d{4}-\d{2}-\d{2}$""".toRegex()
         if (dateNasc.isEmpty() || !datePattern.matches(dateNasc)) {
 
-            Toast.makeText(this, "Invalid date of birth (must be in the format 'yyyy-MM-dd')", Toast.LENGTH_SHORT)
+            Toast.makeText(this, "Invalid date of birth (must be in the format 'yyyy-MM-dd')", Toast.LENGTH_SHORT).show()
             return false
         }
 
