@@ -64,49 +64,64 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Floor"/>
+            android:hint="Floor"
+            android:id="@+id/EtFloor"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Bedrooms"/>
+            android:hint="Bedrooms"
+            android:id="@+id/EtBedrooms"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="WCs"/>
+            android:hint="WCs"
+            android:id="@+id/EtWcs"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Private Gross Area"/>
+            android:hint="Private Gross Area"
+            android:id="@+id/EtPrivateGrossArea"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Total Lot Area"/>
+            android:hint="Total Lot Area"
+            android:id="@+id/EtTotalLotArea"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Shared Room"/>
+            android:hint="Shared Room"
+            android:id="@+id/EtSharedRoom"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Private wc"/>
+            android:hint="Private wc"
+            android:id="@+id/EtNumBeds"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Available kitchen"/>
+            android:hint="Private wc"
+            android:id="@+id/EtPrivateWc"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="Available kitchen"
+            android:id="@+id/EtAvailableKitchen"/>
 
     </LinearLayout>
 
