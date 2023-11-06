@@ -14,6 +14,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val email = intent.getStringExtra("EMAIL")
+
+        emailEditText.setText(email)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

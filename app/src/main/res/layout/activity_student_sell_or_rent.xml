@@ -19,7 +19,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sell"
+        android:text="Buy"
         android:textSize="20dp"
         android:layout_marginTop="50dp"
         android:layout_marginRight="20dp"
