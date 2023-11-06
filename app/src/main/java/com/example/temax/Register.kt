@@ -6,12 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.DatePicker
 import android.widget.EditText
-import com.example.temax.classes.User
+import android.widget.Toast
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.json.JSONArray
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
+import java.io.IOException
 
 class Register : AppCompatActivity() {
 
@@ -30,27 +32,50 @@ class Register : AppCompatActivity() {
     fun secondary_request() {
         val client = OkHttpClient()
 
-        val request: Request = Request.Builder()
-            .url("http://192.168.1.74:3000/users")
-            .build()
 
-        client.newCall(request).execute().use {
-                response ->
-            var res = response.body?.string()
-            if(res != null){
-                val array = JSONArray(res)
-                Log.d("Request",array.toString())
+        var jsonBody = """
+{
+    "Name": "${NameEditText.text}",
+    "Email": "${emailEditText.text}",
+    "Password": "${passwordEditText.text}",
+    "Date_birth": "${dateEditText.text}",
+    "Contact": ${contactEditText.text}
+}
+"""
+    Log.d("debug",jsonBody)
+        // Define the request body and media type (usually JSON)
+        val requestBody =
+            jsonBody.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
 
-                //converter o array de json para string
-                val users = User.importFromJSONArray(array)
-                Log.d("Request",users.toString())
-            }
+        val  requestBuilder = Request.Builder()
+            .url("http://192.168.1.74:3000/users/createUser")
+            .post(requestBody)
+
+        //headers que preciso para o Post
+        val headers = mapOf(
+            "Content-Type" to "application/json"
+        )
+
+        // Add headers if needed
+        headers?.forEach { (key, value) ->
+            requestBuilder.addHeader(key, value)
+        }
+
+        val request = requestBuilder.build()
+
+        try {
+            val response: Response = client.newCall(request).execute()
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Log.d("Error",e.toString())
+
         }
     }
     fun registar_button(view: View){
         if(verificationsRegister(emailEditText.text.toString(),
                 passwordEditText.text.toString(),
                 dateEditText.text.toString())) {
+
             /// codigo abaixo envia o request para o background
             val r = Runnable {
                 //todo:passar como parametro os dados para meter no body
@@ -58,6 +83,11 @@ class Register : AppCompatActivity() {
             }
             val t = Thread(r)
             t.start()
+
+            Toast.makeText(this,"boa criaste conta",Toast.LENGTH_SHORT).show()
+
+
+
         }
     }
 
@@ -66,11 +96,33 @@ class Register : AppCompatActivity() {
         val returnIntent = Intent()
         // não esquecer de por sempre o to string porque senão vai retornal o editavel em vez de string
         //TODO: por aqui a variavel para passar para o login
-        //returnIntent.putExtra("email", xxxxxx)
+        returnIntent.putExtra("email", emailEditText.text)
         setResult(Activity.RESULT_OK, returnIntent)
     }
 
     fun verificationsRegister(email: String, password: String, dateNasc: String ): Boolean{
+
+        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            // Verifica se o email está vazio ou se não é um endereço de email válido.
+            Toast.makeText(this, "Invalid Email", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        val passwordPattern = """^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=]).*$""".toRegex()
+        if (password.isEmpty() || password.length < 6 || !passwordPattern.matches(dateNasc)) {
+            // Verifica se a senha está vazia ou
+            Toast.makeText(this, "Invalid Password", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+
+        val datePattern = """^\d{4}-\d{2}-\d{2}$""".toRegex()
+        if (dateNasc.isEmpty() || !datePattern.matches(dateNasc)) {
+            Toast.makeText(this, "Invalid date of birth (must be in the format 'yyyy-MM-dd')", Toast.LENGTH_SHORT)
+            return false
+        }
+
+        // Se todas as verificações passaram, retorne verdadeiro.
         return true
+
     }
 }
