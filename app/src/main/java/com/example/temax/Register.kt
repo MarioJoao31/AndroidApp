@@ -101,6 +101,28 @@ class Register : AppCompatActivity() {
     }
 
     fun verificationsRegister(email: String, password: String, dateNasc: String ): Boolean{
+
+        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            // Verifica se o email está vazio ou se não é um endereço de email válido.
+            Toast.makeText(this, "Invalid Email", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        val passwordPattern = """^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=]).*$""".toRegex()
+        if (password.isEmpty() || password.length < 6 || !passwordPattern.matches(dateNasc)) {
+            // Verifica se a senha está vazia ou
+            Toast.makeText(this, "Invalid Password", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+
+        val datePattern = """^\d{4}-\d{2}-\d{2}$""".toRegex()
+        if (dateNasc.isEmpty() || !datePattern.matches(dateNasc)) {
+            Toast.makeText(this, "Invalid date of birth (must be in the format 'yyyy-MM-dd')", Toast.LENGTH_SHORT)
+            return false
+        }
+
+        // Se todas as verificações passaram, retorne verdadeiro.
         return true
+
     }
 }
