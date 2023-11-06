@@ -36,6 +36,9 @@ class MainActivity : AppCompatActivity() {
     fun main_buttonLogin(view: View) {
         Toast.makeText(this, emailEditText.text.toString(), Toast.LENGTH_SHORT).show()
 
+        val intent = Intent(this@MainActivity, SelectTypeUser::class.java)
+        startActivityForResult(intent,1)
+
     }
 
     fun main_buttonRegister(view: View){
