@@ -101,15 +101,29 @@ class MainActivity : AppCompatActivity() {
                     //se os parametros do login estiverem corretos passa para a activity SelectTyoeYser
                     val intent = Intent(this@MainActivity, SelectTypeUser::class.java)
                     startActivityForResult(intent,1)
+
+                    // Exibe a mensagem de sucesso
+                    runOnUiThread {
+                        Toast.makeText(this@MainActivity, getString(R.string.login_sucess), Toast.LENGTH_SHORT).show()
+                    }
+
+                }else {
+                   runOnUiThread{
+                       // Exibe a mensagem de erro
+                       Toast.makeText(this@MainActivity, getString(R.string.login_failure), Toast.LENGTH_SHORT).show()
+                   }
+
+                    // Caso esteja errado, define-se aqui as mensagens de erro para ver no LogCat
+                    Log.d("ErrorPost","Post nao funcionou")
                 }
-            } else {
-                // Caso esteja errado, define-se aqui as mensagens de erro.
-                Log.d("ErrorPost","deu merda no post");
-                // You can log the error or return false, indicating validation failure
             }
+
         } catch (e: IOException) {
             e.printStackTrace()
-            // Aqui é os erros de rede ou outras excepções
+            runOnUiThread {
+                // Exibe uma mensagem de erro de rede
+                Toast.makeText(this@MainActivity, getString(R.string.network_error_message), Toast.LENGTH_SHORT).show()
+            }
         }
 
     }
