@@ -15,9 +15,11 @@ import org.json.JSONArray
 
 class Register : AppCompatActivity() {
 
-    val emailEditText: EditText by lazy { findViewById(R.id.editTextText) }
-    val passwordEditText: EditText by lazy { findViewById(R.id.editTextTextPassword)}
-    val dateEditText: EditText by lazy { findViewById(R.id.editTextDate)}
+    val NameEditText: EditText by lazy { findViewById(R.id.register_NameText) }
+    val emailEditText: EditText by lazy { findViewById(R.id.register_EmailText) }
+    val passwordEditText: EditText by lazy { findViewById(R.id.register_passwordText)}
+    val dateEditText: EditText by lazy { findViewById(R.id.register_birthDate)}
+    val contactEditText: EditText by lazy { findViewById(R.id.register_contactNumber)}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
