@@ -21,10 +21,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val email = intent.getStringExtra("EMAIL")
-
-        emailEditText.setText(email)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -60,68 +56,66 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun validate(emailAdrees: String, password: String){
-        //TODO: fazer aqui depois o request a API para ver se tem permissao
+
+        // Cria um cliente OkHttpClient para fazer a solicitação HTTP
         val client = OkHttpClient()
 
-
+        // Cria um JSON body contendo o email e a password do user
         var jsonBody = """
-{
-    "Email": "${emailEditText.text}",
-    "Password": "${passwordEditText.text}"
-}
-"""
+      {
+        "Email": "${emailEditText.text}",
+        "Password": "${passwordEditText.text}"
+      }
+        """
 
-        // Define the request body and media type (usually JSON)
-        val requestBody =
-            jsonBody.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+        // Define o conteudo do corpo e cria esse corpo em JSON
+        val requestBody = jsonBody.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
 
+        // Cria um objeto RequestBuilder para construir a solicitação HTTP
         val  requestBuilder = Request.Builder()
             .url("http://${BuildConfig.API_IP}:3000/users/login")
             .post(requestBody)
 
-        //headers que preciso para o Post
+        //cabeçalhos que preciso para o Post
         val headers = mapOf(
             "Content-Type" to "application/json"
         )
 
-        // Add headers if needed
+        // Adiciona os cabeçalhos da solicitação
         headers?.forEach { (key, value) ->
             requestBuilder.addHeader(key, value)
         }
-
+        // Constroi a solicitação final, com o corpo e respectivo cabeçalho
         val request = requestBuilder.build()
 
         try {
+            // Executa a solicitação HTTP
             val response: Response = client.newCall(request).execute()
             val responseBody = response.body?.string()
 
             if (response.isSuccessful) {
-                // Handle the successful response
-                // Here, you can check the response body or perform any validation
-                val isValid = validateResponse(responseBody)
+                // Se a resposta for bem-sucedida passa para
+                val isValid = verificationsLogin(responseBody)
                 if(isValid){
-                    //se for o login existir passa para a activyti seguinte
+
+                    //se os parametros do login estiverem corretos passa para a activity SelectTyoeYser
                     val intent = Intent(this@MainActivity, SelectTypeUser::class.java)
                     startActivityForResult(intent,1)
                 }
             } else {
-                // Handle the error response
+                // Caso esteja errado, define-se aqui as mensagens de erro.
                 Log.d("ErrorPost","deu merda no post");
                 // You can log the error or return false, indicating validation failure
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            // Handle network or other exceptions
+            // Aqui é os erros de rede ou outras excepções
         }
 
     }
 }
 
-fun validateResponse(responseBody: String?): Boolean {
-    // Implement your response validation logic here
-    // Parse the response and check if it's valid
-    // For example, check if the response contains "Login successful" or other relevant data
+fun verificationsLogin(responseBody: String?): Boolean {
 
-    // Replace the following line with your actual validation logic
     return responseBody?.contains("Login exists") == true
 }

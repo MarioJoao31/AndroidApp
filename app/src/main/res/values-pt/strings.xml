@@ -4,4 +4,6 @@
     <string name="main_login">Entra</string>
     <string name="main_registar">Regista-te</string>
     <string name="register_button">Registar conta</string>
+    <string name="login_sucess">Login bem-sucedido!</string>
+    <string name="login_failure">Os dados estão incorretos. Tente novamente.</string>
 </resources>

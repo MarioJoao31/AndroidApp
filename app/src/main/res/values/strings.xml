@@ -3,4 +3,7 @@
     <string name="main_login">Log in</string>
     <string name="main_registar">Register</string>
     <string name="register_button">Register Account</string>
+    <string name="login_sucess">Sucessful Login</string>
+    <string name="login_failure">The data is incorrect. Try again later</string>
+
 </resources>

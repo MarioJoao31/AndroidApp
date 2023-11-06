@@ -18,6 +18,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        //propriedade para poder accessar a variavel API_IP do Grade.Properties
+        buildConfigField "String", "API_IP", "\"${API_IP}\""
     }
 
     buildFeatures {

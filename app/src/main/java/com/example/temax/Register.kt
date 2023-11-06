@@ -65,6 +65,8 @@ class Register : AppCompatActivity() {
     }
     fun registar_button(view: View){
 
+
+
         if (verificationsRegister(
                 emailEditText.text.toString(),
                 passwordEditText.text.toString(),
