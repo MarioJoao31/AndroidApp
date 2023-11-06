@@ -15,6 +15,7 @@
         android:layout_marginTop="75dp"
         android:text="Estudante"
         android:textSize="20dp"
+        android:onClick="SelectBtTypeStudent"
         />
 
     <Button
@@ -25,6 +26,7 @@
         android:layout_marginTop="75dp"
         android:text="Não Estudante"
         android:textSize="20dp"
+        android:onClick="SelectBtTypeNotStudent"
         />
 
 
