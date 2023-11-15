@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Temax"
         tools:targetApi="31">
         <activity
+            android:name=".RentScreen"
+            android:exported="false" />
+        <activity
             android:name=".NotStudentSell"
             android:exported="false" />
         <activity
