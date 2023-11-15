@@ -44,12 +44,12 @@ class NotStudentSell : AppCompatActivity() {
         )
 
         val items2 = listOf(
-            SpinnerItem("Sell", R.mipmap.ic_flat),
-            SpinnerItem("Rent", R.mipmap.ic_house),
+            SpinnerItem("Sell", R.mipmap.ic_buyhouse),
+            SpinnerItem("Rent", R.mipmap.ic_rent),
         )
 
         val adapter2 = Spinner_Sell_Adapter(this, items2)
-        spinner.adapter = adapter2
+        spinner2.adapter = adapter2
 
         val adapter = Spinner_Sell_Adapter(this, items)
         spinner.adapter = adapter
