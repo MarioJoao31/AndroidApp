@@ -12,6 +12,11 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import com.example.temax.BuildConfig
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.Response
+import java.io.IOException
 
 
 class Register : AppCompatActivity() {
@@ -49,7 +54,7 @@ class Register : AppCompatActivity() {
 
 
         val  requestBuilder = Request.Builder()
-            .url("http://${BuildConfig.API_IP}:3000/users/createUser")
+            .url("http://172.16.5.246:3000/users/createUser")
             .post(requestBody)
 
         //headers que preciso para o Post
@@ -62,6 +67,27 @@ class Register : AppCompatActivity() {
             requestBuilder.addHeader(key, value)
         }
 
+        val request = requestBuilder.build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                // Handle failure
+                Log.e("Register", "Error: ${e.message}")
+                // Aqui você pode adicionar código para lidar com a falha na requisição, se necessário
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                // Handle success
+                if (response.isSuccessful) {
+                    val responseBody = response.body?.string()
+                    Log.d("Register", "Response: $responseBody")
+                    // Aqui você pode adicionar código para lidar com a resposta bem-sucedida
+                } else {
+                    Log.e("Register", "Error: ${response.code}")
+                    // Aqui você pode adicionar código para lidar com erros de resposta do servidor
+                }
+            }
+        })
     }
     fun registar_button(view: View){
 
