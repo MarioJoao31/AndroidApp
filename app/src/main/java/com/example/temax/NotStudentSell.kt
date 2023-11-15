@@ -16,6 +16,7 @@ class NotStudentSell : AppCompatActivity() {
 
 
         val spinner = findViewById<Spinner>(R.id.myspinner)
+        val spinner2 = findViewById<Spinner>(R.id.SpinnerRentORSell)
 
         //visibilidade NA opçao de Room
         val etAvailableKitchen = findViewById<EditText>(R.id.EtAvailableKitchen)
@@ -41,6 +42,14 @@ class NotStudentSell : AppCompatActivity() {
             SpinnerItem("Residence", R.mipmap.ic_house),
             SpinnerItem("Room", R.mipmap.ic_room),
         )
+
+        val items2 = listOf(
+            SpinnerItem("Sell", R.mipmap.ic_flat),
+            SpinnerItem("Rent", R.mipmap.ic_house),
+        )
+
+        val adapter2 = Spinner_Sell_Adapter(this, items2)
+        spinner.adapter = adapter2
 
         val adapter = Spinner_Sell_Adapter(this, items)
         spinner.adapter = adapter
