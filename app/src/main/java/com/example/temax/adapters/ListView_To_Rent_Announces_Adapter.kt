@@ -1,6 +1,7 @@
 package com.example.temax.adapters
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,39 +9,53 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.temax.R
+import com.example.temax.classes.House
 
-class ListViewSellAnnounceAdapter(context: Context) :
-    ArrayAdapter<ListViewSellAnnounceAdapter.SellAnnounce>(context, R.layout.custum_listview_annonces) {
+class ListViewSellAnnounceAdapter(context: Context,resource: Int, objects: MutableList<House> ) :
+    ArrayAdapter<House>(context, resource,objects) {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private val sellAnnounces = mutableListOf<SellAnnounce>()
-
-    data class SellAnnounce(
-        val imageResource: Int,
-        val postalCode: String,
-        val description: String
-    )
+    private val listHouses = mutableListOf<House>()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val view = convertView ?: inflater.inflate(R.layout.custum_listview_annonces, parent, false)
-        val item = sellAnnounces[position]
-        val imageView = view.findViewById<ImageView>(R.id.image_sell_announce)
-        val postalCodeTextView = view.findViewById<TextView>(R.id.text_postal_code)
-        val descriptionTextView = view.findViewById<TextView>(R.id.text_description)
+        val view: View
+        val vh: MyViewHolderRent
 
-        imageView.setImageResource(item.imageResource)
-        postalCodeTextView.text = item.postalCode
-        descriptionTextView.text = item.description
+        //serve para melhorar o processo de memoria e de guardar as list views que ja passaram
+        if(convertView != null){
+            view = convertView
+        }else{
+            view = LayoutInflater.from(context).inflate(R.layout.custum_listview_annonces,parent,false)
+            view.tag = MyViewHolderRent(view)
+        }
+
+        //serve para fazer referencia a class abaixo
+        vh = view.tag as MyViewHolderRent
+        //serve para ir buscar os valores da lista
+        val house = getItem(position)
+
+        //verificação se os valores não forem nullos
+        if(house != null){
+            if (house.ListingType == "rent"){
+                vh.imagem?.setBackgroundColor(Color.GREEN)
+            }else{
+                vh.imagem?.setBackgroundColor(Color.RED)
+            }
+            vh.codigo_postal?.text = house.Postal_code
+            vh.descricao?.text = house.Description
+        }
 
         return view
     }
 
-    fun addSellAnnounce(imageResource: Int, postalCode: String, description: String) {
-        sellAnnounces.add(SellAnnounce(imageResource, postalCode, description))
-        notifyDataSetChanged()
-    }
+}
 
-    override fun getCount(): Int {
-        return sellAnnounces.size
-    }
+//serve para guardar as views
+private class MyViewHolderRent(view: View?){
+    //image
+    val imagem = view?.findViewById<ImageView>(R.id.image_sell_announce)
+    //codigo postal
+    val codigo_postal = view?.findViewById<TextView>(R.id.text_postal_code)
+    //descricao
+    val descricao = view?.findViewById<TextView>(R.id.text_description)
 }
