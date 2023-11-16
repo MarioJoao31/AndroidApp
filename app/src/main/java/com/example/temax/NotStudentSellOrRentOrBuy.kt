@@ -15,4 +15,14 @@ class NotStudentSellOrRentOrBuy : AppCompatActivity() {
         val intent = Intent(this@NotStudentSellOrRentOrBuy, NotStudentSell::class.java)
         startActivityForResult(intent,1)
     }
+
+    fun GoToRentPage (view: View){
+        val intent = Intent(this@NotStudentSellOrRentOrBuy, RentScreen::class.java)
+        startActivityForResult(intent,1)
+    }
+
+    fun goToBuyListing(view: View) {
+        val intent = Intent(this@NotStudentSellOrRentOrBuy, BuyPropertieListing::class.java)
+        startActivityForResult(intent,1)
+    }
 }
