@@ -30,6 +30,12 @@
             android:id="@+id/myspinner"
             android:layout_marginTop="20dp"/>
 
+        <Spinner
+            android:id="@+id/SpinnerRentORSell"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp" />
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -122,14 +128,6 @@
             android:layout_marginTop="20dp"
             android:hint="Available kitchen"
             android:id="@+id/EtAvailableKitchen"/>
-
-        <Spinner
-            android:id="@+id/SpinnerRentORSell"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"/>
 
     </LinearLayout>
 
