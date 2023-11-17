@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.Switch
 import com.example.temax.adapters.SpinnerItem
 import com.example.temax.adapters.Spinner_Sell_Adapter
 
@@ -94,7 +95,22 @@ class NotStudentSell : AppCompatActivity() {
                         etSharedRoom.visibility = View.VISIBLE
                     }
                 }
+
+                val switchElevator = findViewById<Switch>(R.id.switchElevator)
+                switchElevator.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) {
+                        // O switch está ligado (sim)
+                        // Faça algo aqui, se necessário
+                    } else {
+                        // O switch está desligado (não)
+                        // Faça algo aqui, se necessário
+                    }
+                }
+
             }
+
+
+
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 // Implemente conforme necessário
