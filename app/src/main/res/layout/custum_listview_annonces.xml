@@ -18,13 +18,13 @@
         android:layout_marginStart="16dp">
 
         <TextView
-            android:id="@+id/text_postal_code"
+            android:id="@+id/text_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#000000"
-            android:text="Código Postal" />
+            android:text="1212313" />
 
         <TextView
             android:id="@+id/text_description"
@@ -32,9 +32,77 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="#555555"
-            android:maxLines="2"
             android:text="Descrição da casa" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/text_fixed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#555555"
+
+            android:text="WCs: " />
+
+        <TextView
+            android:id="@+id/text_WCs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#555555"
+
+            android:text="3" />
+
+        <TextView
+            android:id="@+id/text_fixed2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#555555"
+
+            android:text="    /" />
+        <TextView
+            android:id="@+id/text_fixed3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#555555"
+
+            android:text="    Area Total: " />
+        <TextView
+            android:id="@+id/text_total_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#555555"
+
+            android:text=" " />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView
+            android:id="@+id/text_fixed4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#555555"
+
+            android:text="Elevador: " />
+        <TextView
+            android:id="@+id/text_elevator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#555555"
+
+            android:text="sim" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

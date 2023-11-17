@@ -55,7 +55,7 @@ private class MyViewHolderRent(view: View?){
     //image
     val imagem = view?.findViewById<ImageView>(R.id.image_sell_announce)
     //codigo postal
-    val codigo_postal = view?.findViewById<TextView>(R.id.text_postal_code)
+    val codigo_postal = view?.findViewById<TextView>(R.id.text_price)
     //descricao
     val descricao = view?.findViewById<TextView>(R.id.text_description)
 }

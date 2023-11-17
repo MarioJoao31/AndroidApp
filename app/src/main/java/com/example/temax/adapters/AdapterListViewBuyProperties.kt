@@ -11,7 +11,7 @@ import android.widget.TextView
 import com.example.temax.R
 import com.example.temax.classes.House
 
-class AdapterListViewBuyProperties(context: Context,resource: Int, objects: MutableList<House> ) :
+class AdapterListViewBuyProperties(context: Context,resource: Int, objects: List<House> ) :
     ArrayAdapter<House>(context, resource,objects) {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -41,8 +41,11 @@ class AdapterListViewBuyProperties(context: Context,resource: Int, objects: Muta
             }else{
                 vh.imagem?.setBackgroundColor(Color.RED)
             }
-            vh.codigo_postal?.text = house.Postal_code
+            vh.price?.text = house.Price.toString()
             vh.descricao?.text = house.Description
+            vh.elevator?.text = house.Elevator
+            vh.wcs?.text = house.WCs.toString()
+            vh.totalArea?.text = house.Total_lot_area.toString()
         }
 
         return view
@@ -55,7 +58,13 @@ private class MyViewHolder(view: View?){
     //image
     val imagem = view?.findViewById<ImageView>(R.id.image_sell_announce)
     //codigo postal
-    val codigo_postal = view?.findViewById<TextView>(R.id.text_postal_code)
+    val price = view?.findViewById<TextView>(R.id.text_price)
+
+    val wcs = view?.findViewById<TextView>(R.id.text_WCs)
+    //area total
+    val totalArea = view?.findViewById<TextView>(R.id.text_total_area)
     //descricao
     val descricao = view?.findViewById<TextView>(R.id.text_description)
+
+    val elevator = view?.findViewById<TextView>(R.id.text_elevator)
 }
