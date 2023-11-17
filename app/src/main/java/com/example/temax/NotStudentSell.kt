@@ -2,44 +2,60 @@ package com.example.temax
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.Spinner
 import com.example.temax.adapters.SpinnerItem
 import com.example.temax.adapters.Spinner_Sell_Adapter
+import com.example.temax.classes.CreateHouse
+import com.example.temax.classes.House
+import com.example.temax.services.HouseServices
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class NotStudentSell : AppCompatActivity() {
+    //variavel para
+    var sellOrRent: Int = 0
+    var kindOfResidence: String = ""
+
+    //link para os et
+    private val spinner by lazy { findViewById<Spinner>(R.id.myspinner) }
+    private val spinner2 by lazy { findViewById<Spinner>(R.id.SpinnerRentORSell) }
+
+    private val etPrice by lazy { findViewById<EditText>(R.id.etPrice) }
+    private val etConstruction_year by lazy { findViewById<EditText>(R.id.etConstruction_year) }
+    private val etParking by lazy { findViewById<EditText>(R.id.etParking) }
+    private val etElevator by lazy { findViewById<EditText>(R.id.etElevator) }
+    private val etDescription by lazy { findViewById<EditText>(R.id.etDescription) }
+    private val etPostal_code by lazy { findViewById<EditText>(R.id.etPostal_code) }
+
+
+    private val etAvailableKitchen by lazy { findViewById<EditText>(R.id.EtAvailableKitchen) }
+    private val etPrivateWc by lazy { findViewById<EditText>(R.id.EtPrivateWc) }
+    private val etNumBeds by lazy { findViewById<EditText>(R.id.EtNumBeds) }
+    private val etSharedRoom by lazy { findViewById<EditText>(R.id.EtSharedRoom) }
+
+    private val etTotalLotArea by lazy { findViewById<EditText>(R.id.EtTotalLotArea) }
+    private val etPrivateGrossArea by lazy { findViewById<EditText>(R.id.EtPrivateGrossArea) }
+    private val etWcs by lazy { findViewById<EditText>(R.id.EtWcs) }
+    private val etBedrooms by lazy { findViewById<EditText>(R.id.EtBedrooms) }
+
+    // Lazy initialization for EditText in the "Apartment" section
+    private val etFloor by lazy { findViewById<EditText>(R.id.EtFloor) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_not_student_sell)
 
-
-        val spinner = findViewById<Spinner>(R.id.myspinner)
-        val spinner2 = findViewById<Spinner>(R.id.SpinnerRentORSell)
-
-        //visibilidade NA opçao de Room
-        val etAvailableKitchen = findViewById<EditText>(R.id.EtAvailableKitchen)
-        val etPrivateWc = findViewById<EditText>(R.id.EtPrivateWc)
-        val etNumBeds = findViewById<EditText>(R.id.EtNumBeds)
-        val etSharedRoom = findViewById<EditText>(R.id.EtSharedRoom)
-
-        //visibilidade na house
-
-        val etTotalLotArea = findViewById<EditText>(R.id.EtTotalLotArea)
-        val etPrivateGrossArea = findViewById<EditText>(R.id.EtPrivateGrossArea)
-        val etWcs = findViewById<EditText>(R.id.EtWcs)
-        val etBedrooms = findViewById<EditText>(R.id.EtBedrooms)
-
-        //visibilidade na flat
-
-        val etFloor = findViewById<EditText>(R.id.EtFloor)
-
-        // ... adicione mais referências para suas EditTexts conforme necessário
-
+        //lista de items para os spinners
         val items = listOf(
             SpinnerItem("Apartment", R.mipmap.ic_flat),
-            SpinnerItem("Residence", R.mipmap.ic_house),
+            SpinnerItem("House", R.mipmap.ic_house),
             SpinnerItem("Room", R.mipmap.ic_room),
         )
 
@@ -55,8 +71,25 @@ class NotStudentSell : AppCompatActivity() {
         spinner.adapter = adapter
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 val selectedItem = items[position].text
+                val selectedItem2 = items2[position].text
+
+                //guarda se quer arrendar ou vender
+                when (selectedItem2) {
+                    "Sell" -> {
+                        sellOrRent = 0
+                    }
+
+                    "Rent" -> {
+                        sellOrRent = 1
+                    }
+                }
 
                 //Room
                 etAvailableKitchen.visibility = View.GONE
@@ -75,19 +108,25 @@ class NotStudentSell : AppCompatActivity() {
                 // Mostra as EditTexts com base na opção selecionada no Spinner
                 when (selectedItem) {
                     "Apartment" -> {
+                        kindOfResidence = "Apartment"
                         // ... mostre outras EditTexts conforme necessário para "Apartment"
                         etFloor.visibility = View.VISIBLE
                         etWcs.visibility = View.VISIBLE
                         etBedrooms.visibility = View.VISIBLE
+
                     }
-                    "Residence" -> {
+
+                    "House" -> {
+                        kindOfResidence = "House"
                         // Mostrar as EditTexts necessárias para "Residence"
                         etTotalLotArea.visibility = View.VISIBLE
                         etPrivateGrossArea.visibility = View.VISIBLE
                         etWcs.visibility = View.VISIBLE
                         etBedrooms.visibility = View.VISIBLE
                     }
+
                     "Room" -> {
+                        kindOfResidence = "Room"
                         etAvailableKitchen.visibility = View.VISIBLE
                         etPrivateWc.visibility = View.VISIBLE
                         etNumBeds.visibility = View.VISIBLE
@@ -101,4 +140,74 @@ class NotStudentSell : AppCompatActivity() {
             }
         }
     }
+
+    fun sellOrRentHouse(view: View) {
+        Log.d("resposta","esta a clikar no butao")
+        when (kindOfResidence) {
+
+            //se for House faz request para link diferente
+            "House" -> {
+
+                //para ver se vende ou arrenda
+                var sellOrRentTemp: String = ""
+                if (sellOrRent == 0) {
+                    sellOrRentTemp = "Sell"
+                } else {
+                    sellOrRentTemp = "Rent"
+                }
+                Log.d("resposta","estas a chegar aqui?")
+
+                val createHouseRequest = CreateHouse(
+                    //TODO: por aqui o id do user guardado do login
+                    UserID = 1,
+                    //transforma de string para double
+                    Price = etPrice.text.toString().toDouble(),
+                    Construction_year = etConstruction_year.text.toString().toInt(),
+                    Parking = etParking.text.toString().toInt(),
+                    Elevator = etElevator.text.toString(),
+                    //default é 3
+                    Prioraty_level = 3,
+                    Description = etDescription.text.toString(),
+                    Postal_code = etPostal_code.text.toString(),
+                    Private_gross_area = etPrivateGrossArea.text.toString().toInt(),
+                    Total_lot_area = etTotalLotArea.text.toString().toInt(),
+                    Bedrooms = etBedrooms.text.toString().toInt(),
+                    WCs = etWcs.text.toString().toInt(),
+                    ListingType = sellOrRentTemp,
+                )
+                Log.d("resposta", createHouseRequest.toString())
+                requestCriarCasa(createHouseRequest)
+            }
+        }
+
+    }
 }
+    private fun requestCriarCasa(createHouseRequest: CreateHouse){
+        val BASE_URL = "http://${BuildConfig.API_IP}:3000/house/createHouse/"
+
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(HouseServices::class.java)
+
+        // Cria request com o createhouse object
+        val call = service.createHouse(createHouseRequest)
+        call.enqueue( object : Callback<CreateHouse> {
+            override fun onResponse(call : Call<CreateHouse>, response: Response<CreateHouse>){
+                if(response.code() == 200){
+                    val retroFit2 = response.body()
+                    Log.d("resposta",retroFit2.toString())
+                }
+            }
+
+            override fun onFailure(call: Call<CreateHouse>, t: Throwable) {
+                print("error")
+            }
+        })
+    }
+
+
+
+

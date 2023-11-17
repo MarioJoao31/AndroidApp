@@ -2,7 +2,7 @@ package com.example.temax.classes
 
 import com.google.gson.annotations.SerializedName
 
-class House(@SerializedName("HouseID") val HouseID: Int,
+class CreateHouse(
             @SerializedName("UserID") val UserID: Int,
             @SerializedName("Price") val Price: Double,
             @SerializedName("Construction_year") val Construction_year: Int,
@@ -14,6 +14,7 @@ class House(@SerializedName("HouseID") val HouseID: Int,
             @SerializedName("Private_gross_area") val Private_gross_area: Int,
             @SerializedName("Total_lot_area") val Total_lot_area: Int,
             @SerializedName("Bedrooms") val Bedrooms: Int,
+
             @SerializedName("WCs") val WCs: Int,
             @SerializedName("ListingType") val ListingType: String) {
 }
