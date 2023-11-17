@@ -55,13 +55,12 @@
             android:layout_marginTop="20dp"
             android:hint="Parking"/>
 
-        <EditText
-            android:id="@+id/etElevator"
-
+        <Switch
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Elevator"/>
+            android:hint="Elevator"
+            android:id="@+id/switchElevator"/>
 
         <EditText
             android:id="@+id/etDescription"
