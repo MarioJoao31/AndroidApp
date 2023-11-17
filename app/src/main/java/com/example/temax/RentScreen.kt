@@ -1,5 +1,6 @@
 package com.example.temax
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ListView
@@ -24,7 +25,15 @@ class RentScreen : AppCompatActivity() {
 
         listView.adapter = adapter
 
+        listView.setOnItemClickListener { _, _, position, _ ->
+            // Iniciar a atividade SelectedHouse e passar os detalhes da casa selecionada através de Intent extras
+            val intent = Intent(this@RentScreen, SelectedHouse::class.java)
+            startActivity(intent)
+        }
+
     }
+
+
 
 
 }
