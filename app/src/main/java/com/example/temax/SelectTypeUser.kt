@@ -12,7 +12,7 @@ class SelectTypeUser : AppCompatActivity() {
     }
 
     fun SelectBtTypeStudent (view:View){
-        val intent = Intent(this@SelectTypeUser, StudentSellOrRent::class.java)
+        val intent = Intent(this@SelectTypeUser, StudentRentList::class.java)
         startActivityForResult(intent,1)
     }
 
