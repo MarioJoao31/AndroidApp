@@ -17,13 +17,12 @@ class RentScreen : AppCompatActivity() {
         val listView = findViewById<ListView>(R.id.listview_rent_announces)
 
         //dados para a lista
-        var house1 = House(1,2,123.0,2001, 2,"sim",3,"descricao,","4710-306",55,20,2,"Rent")
-        var house2 = House(1,2,123.0,2001, 2,"sim",3,"descricao,","4710-306",55,20,2,"Rent")
+        //var house1 = House(1,2,123.0,2001, 2,"sim",3,"descricao,","4710-306",55,20,2,"Rent")
 
-        val values = mutableListOf<House>(house1,house2)
-        val adapter = AdapterListViewBuyProperties(this,R.layout.custum_listview_annonces,values)
+        //val values = mutableListOf<House>(house1,house2)
+        //val adapter = AdapterListViewBuyProperties(this,R.layout.custum_listview_annonces,values)
 
-        listView.adapter = adapter
+        //listView.adapter = adapter
 
         listView.setOnItemClickListener { _, _, position, _ ->
             // Iniciar a atividade SelectedHouse e passar os detalhes da casa selecionada através de Intent extras

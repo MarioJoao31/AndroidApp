@@ -23,6 +23,8 @@ class NotStudentSell : AppCompatActivity() {
     //variavel para
     var sellOrRent: Int = 0
     var kindOfResidence: String = ""
+    var elevatorResult: String = ""
+
 
     //link para os et
     private val spinner by lazy { findViewById<Spinner>(R.id.myspinner) }
@@ -31,7 +33,7 @@ class NotStudentSell : AppCompatActivity() {
     private val etPrice by lazy { findViewById<EditText>(R.id.etPrice) }
     private val etConstruction_year by lazy { findViewById<EditText>(R.id.etConstruction_year) }
     private val etParking by lazy { findViewById<EditText>(R.id.etParking) }
-    private val etElevator by lazy { findViewById<EditText>(R.id.etElevator) }
+    private val switchElevator by lazy { findViewById<Switch>(R.id.switchElevator) }
     private val etDescription by lazy { findViewById<EditText>(R.id.etDescription) }
     private val etPostal_code by lazy { findViewById<EditText>(R.id.etPostal_code) }
 
@@ -139,10 +141,10 @@ class NotStudentSell : AppCompatActivity() {
                 switchElevator.setOnCheckedChangeListener { _, isChecked ->
                     if (isChecked) {
                         // O switch está ligado (sim)
-                        // Faça algo aqui, se necessário
+                        elevatorResult = "Sim"
                     } else {
                         // O switch está desligado (não)
-                        // Faça algo aqui, se necessário
+                        elevatorResult = "Não"
                     }
                 }
 
@@ -180,7 +182,8 @@ class NotStudentSell : AppCompatActivity() {
                     Price = etPrice.text.toString().toDouble(),
                     Construction_year = etConstruction_year.text.toString().toInt(),
                     Parking = etParking.text.toString().toInt(),
-                    Elevator = etElevator.text.toString(),
+                    //valor do switch adicionado na variavel temp em cima
+                    Elevator = elevatorResult,
                     //default é 3
                     Prioraty_level = 3,
                     Description = etDescription.text.toString(),
@@ -222,6 +225,8 @@ class NotStudentSell : AppCompatActivity() {
                 print("error")
             }
         })
+
+        //TODO: por aqui intent e um toast para depois de criar a casa ir para o dashboard
     }
 
 
