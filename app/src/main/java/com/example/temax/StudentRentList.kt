@@ -22,8 +22,8 @@ class StudentRentList : AppCompatActivity() {
 
         val listView = findViewById<ListView>(R.id.listview_student_rent_announces)
 
-        //Temporário apenas para testagem depois trocar pelo caminho de casas para arrendar
-        val BASE_URL = "http://192.168.1.64:3000/house/"
+        //URL para a função de casas para arrendar /
+        val BASE_URL = "http://192.168.1.11:3000/house/rentHouses/"
 
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -32,8 +32,8 @@ class StudentRentList : AppCompatActivity() {
 
         val service = retrofit.create(HouseServices::class.java)
 
-        //Trocar aqui tambem depois não esquecer
-        val call = service.getAllHouses()
+        //chamada do serviço getRentHouses proveniente do HouseServices
+        val call = service.getRentHouses()
         call.enqueue(object : Callback<List<House>>{
             override fun onResponse(call : Call<List<House>>, response: Response<List<House>>){
                 if(response.code() == 200){

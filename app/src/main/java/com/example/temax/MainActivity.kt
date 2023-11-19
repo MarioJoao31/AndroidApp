@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
 
         // Cria um objeto RequestBuilder para construir a solicitação HTTP
         val  requestBuilder = Request.Builder()
-            .url("http://192.168.1.64:3000/users/login")
+            .url("http://192.168.1.11:3000/users/login")
             .post(requestBody)
 
         //cabeçalhos que preciso para o Post
