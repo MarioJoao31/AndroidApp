@@ -54,7 +54,7 @@ class Register : AppCompatActivity() {
 
 
         val  requestBuilder = Request.Builder()
-            .url("http://192.168.1.64:3000/users/createUser")
+            .url("http://${BuildConfig.API_IP}:3000/users/createUser")
             .post(requestBody)
 
         //headers que preciso para o Post

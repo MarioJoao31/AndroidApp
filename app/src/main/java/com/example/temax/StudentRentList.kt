@@ -25,7 +25,7 @@ class StudentRentList : AppCompatActivity() {
         val listView = findViewById<ListView>(R.id.listview_student_rent_announces)
 
         //URL para a função de casas para arrendar /
-        val BASE_URL = "http://172.16.15.158:3000/house/rentHouses/"
+        val BASE_URL = "http://${BuildConfig.API_IP}:3000/house/rentHouses/"
 
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
