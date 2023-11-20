@@ -1,5 +1,6 @@
 package com.example.temax
 
+import android.media.tv.AdRequest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -150,9 +151,6 @@ class NotStudentSell : AppCompatActivity() {
 
             }
 
-
-
-
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 // Implemente conforme necessário
             }
@@ -160,7 +158,6 @@ class NotStudentSell : AppCompatActivity() {
     }
 
     fun sellOrRentHouse(view: View) {
-        Log.d("resposta","esta a clikar no butao")
         when (kindOfResidence) {
 
             //se for House faz request para link diferente
@@ -193,8 +190,10 @@ class NotStudentSell : AppCompatActivity() {
                     Bedrooms = etBedrooms.text.toString().toInt(),
                     WCs = etWcs.text.toString().toInt(),
                     ListingType = sellOrRentTemp,
+                    //TODO: fazer uma edittext para introduzir titulo e address
+                    Title = "titulo",
+                    Address = "ex"
                 )
-                Log.d("resposta", createHouseRequest.toString())
                 requestCriarCasa(createHouseRequest)
             }
         }

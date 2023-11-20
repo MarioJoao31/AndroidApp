@@ -36,7 +36,7 @@ class AdapterListViewBuyProperties(context: Context,resource: Int, objects: List
 
         //verificação se os valores não forem nullos
         if(house != null){
-            if (house.ListingType == "sell"){
+            if (house.ListingType == "sell" && house.ListingType == "Sell" ){
                 vh.imagem?.setBackgroundColor(Color.GREEN)
             }else{
                 vh.imagem?.setBackgroundColor(Color.RED)

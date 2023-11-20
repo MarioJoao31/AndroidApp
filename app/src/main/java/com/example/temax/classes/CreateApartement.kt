@@ -14,5 +14,7 @@ class CreateApartement(
                        @SerializedName("Floor") val Floor: Int,
                        @SerializedName("Bedrooms") val Bedrooms: Int,
                        @SerializedName("WCs") val WCs: Int,
-                       @SerializedName("ListingType") val ListingType: String) {
+                       @SerializedName("ListingType") val ListingType: String,
+                       @SerializedName("Title") val Title: String,
+                       @SerializedName("Address") val Address: String) {
 }
