@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ListView
 import com.example.temax.adapters.AdapterListViewBuyProperties
+import com.example.temax.classes.Apartement
 import com.example.temax.classes.House
+import com.example.temax.services.ApartementServices
 import com.example.temax.services.HouseServices
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,7 +25,7 @@ class StudentRentList : AppCompatActivity() {
         val listView = findViewById<ListView>(R.id.listview_student_rent_announces)
 
         //URL para a função de casas para arrendar /
-        val BASE_URL = "http://192.168.1.11:3000/house/rentHouses/"
+        val BASE_URL = "http://172.16.15.158:3000/house/rentHouses/"
 
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)

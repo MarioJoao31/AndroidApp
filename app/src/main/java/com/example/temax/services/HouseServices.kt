@@ -12,10 +12,9 @@ interface HouseServices {
     @GET("/house")
     fun getAllHouses(): Call<List<House>>
 
-
     //PROTOCOL: Get
     // ROTA: /house/rentHouses
-    // DESC: Retorna todas as casas disponíveis para aluguel
+    // DESC: Retorna todas as casas disponíveis para aluguer
     @GET("/house/rentHouses")
     fun getRentHouses(): Call<List<House>>
     //tem de passar um createhouse nao uma house

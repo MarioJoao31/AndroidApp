@@ -21,7 +21,7 @@ class BuyPropertieListing : AppCompatActivity() {
         val listView = findViewById<ListView>(R.id.listviewBuyProperties)
 
 
-        val BASE_URL = "http://192.168.1.11:3000/house/" // Replace with your API base URL
+        val BASE_URL = "http://172.16.15.158:3000/house/" // Replace with your API base URL
 
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
