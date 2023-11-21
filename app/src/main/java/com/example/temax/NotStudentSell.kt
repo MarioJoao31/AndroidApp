@@ -32,6 +32,8 @@ class NotStudentSell : AppCompatActivity() {
     private val spinner2 by lazy { findViewById<Spinner>(R.id.SpinnerRentORSell) }
 
     private val etPrice by lazy { findViewById<EditText>(R.id.etPrice) }
+    private val etTitle by lazy { findViewById<EditText>(R.id.etTitle) }
+    private val etAddress by lazy { findViewById<EditText>(R.id.etAddress) }
     private val etConstruction_year by lazy { findViewById<EditText>(R.id.etConstruction_year) }
     private val etParking by lazy { findViewById<EditText>(R.id.etParking) }
     private val switchElevator by lazy { findViewById<Switch>(R.id.switchElevator) }
@@ -58,7 +60,7 @@ class NotStudentSell : AppCompatActivity() {
 
         //lista de items para os spinners
         val items = listOf(
-            SpinnerItem("Apartment", R.mipmap.ic_flat),
+            SpinnerItem("Apartement", R.mipmap.ic_flat),
             SpinnerItem("House", R.mipmap.ic_house),
             SpinnerItem("Room", R.mipmap.ic_room),
         )
@@ -190,11 +192,14 @@ class NotStudentSell : AppCompatActivity() {
                     Bedrooms = etBedrooms.text.toString().toInt(),
                     WCs = etWcs.text.toString().toInt(),
                     ListingType = sellOrRentTemp,
-                    //TODO: fazer uma edittext para introduzir titulo e address
-                    Title = "titulo",
-                    Address = "ex"
+                    Title = etTitle.text.toString(),
+                    Address = etAddress.text.toString()
                 )
                 requestCriarCasa(createHouseRequest)
+            }
+
+            "Apartement" ->{
+                //TODO: criar apartamento e enviar para a base de dados
             }
         }
 
@@ -217,6 +222,7 @@ class NotStudentSell : AppCompatActivity() {
                 if(response.code() == 200){
                     val retroFit2 = response.body()
                     Log.d("resposta",retroFit2.toString())
+                    //TODO:meter aqui depois o intent para passar para a dashboard
                 }
             }
 
