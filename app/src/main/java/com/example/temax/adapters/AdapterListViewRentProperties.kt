@@ -39,9 +39,11 @@ class AdapterListViewRentProperties(
         //serve para ir buscar os valores da lista
         val property = getItem(position)
 
+        val rentRegex = Regex("rent", RegexOption.IGNORE_CASE)
+
         if (property is House) {
             //  Logica  para House
-            if (property.ListingType.equals("rent", ignoreCase = true)) {
+            if (rentRegex.containsMatchIn(property.ListingType)) {
                 vh.imagem?.setBackgroundColor(Color.RED) // Cor diferente para casas para alugar
             } else {
                 vh.imagem?.setBackgroundColor(Color.GREEN) // Cor padrão para casas
@@ -54,7 +56,7 @@ class AdapterListViewRentProperties(
 
         } else if (property is Apartement) {
             //  Logica  para Apartement
-            if (property.ListingType.equals("rent", ignoreCase = true)) {
+            if (rentRegex.containsMatchIn(property.ListingType)) {
                 vh.imagem?.setBackgroundColor(Color.BLUE) // Cor diferente para apartamentos para alugar
             } else {
                 vh.imagem?.setBackgroundColor(Color.GREEN) // Cor padrão para apartamentos
