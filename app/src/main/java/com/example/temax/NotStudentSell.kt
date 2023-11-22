@@ -223,6 +223,7 @@ class NotStudentSell : AppCompatActivity() {
                     val retroFit2 = response.body()
                     Log.d("resposta",retroFit2.toString())
                     //TODO:meter aqui depois o intent para passar para a dashboard
+
                 }
             }
 

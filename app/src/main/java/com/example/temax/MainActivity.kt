@@ -1,7 +1,9 @@
 package com.example.temax
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +15,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
+import org.json.JSONObject
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
@@ -39,6 +42,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    //shared preferences para guardar o userId e token
+    fun getSharedPreferences(context: Context): SharedPreferences {
+        return context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
+    }
+
+
 
     fun main_buttonLogin(view: View) {
 
@@ -98,12 +108,19 @@ class MainActivity : AppCompatActivity() {
                 val isValid = verificationsLogin(responseBody)
                 if(isValid){
 
+                    val json = JSONObject(responseBody)
+                    //para guardar nas shared pref
+                    getSharedPreferences(this).edit().putString("Token",json.optString("Token")).commit()
+                    getSharedPreferences(this).edit().putString("userId",json.optString("userId")).commit()
+
                     //se os parametros do login estiverem corretos passa para a activity SelectTyoeYser
                     val intent = Intent(this@MainActivity, SelectTypeUser::class.java)
                     startActivityForResult(intent,1)
 
+
                     // Exibe a mensagem de sucesso
                     runOnUiThread {
+
                         Toast.makeText(this@MainActivity, getString(R.string.login_sucess), Toast.LENGTH_SHORT).show()
                     }
 
@@ -130,6 +147,20 @@ class MainActivity : AppCompatActivity() {
 }
 
 fun verificationsLogin(responseBody: String?): Boolean {
+    if (responseBody.isNullOrBlank()) {
+        // Invalid response body (null or empty)
+        return false
+    }
+    try {
+        val json = JSONObject(responseBody)
+        val userId = json.optInt("userId", -1)
+        val token = json.optString("token", "")
 
-    return responseBody?.contains("Login exists") == true
+        // Check if both "userId" and "token" fields are present and not empty
+        return userId != -1 && token.isNotEmpty()
+
+    } catch (e: Exception) {
+        // Invalid JSON format
+        return false
+    }
 }
