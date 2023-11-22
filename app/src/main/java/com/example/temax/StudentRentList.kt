@@ -1,5 +1,6 @@
 package com.example.temax
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ListView
@@ -99,5 +100,12 @@ class StudentRentList : AppCompatActivity() {
                 Log.e("StudentRentList", "Error fetching Houses", t)
             }
         })
+
+        //TODO: Tem que levar o ID da casa, com o intent de put extra
+        listView.setOnItemClickListener { _, _, position, _ ->
+            // Iniciar a atividade SelectedHouse e passar os detalhes da casa selecionada através de Intent extras
+            val intent = Intent(this@StudentRentList, SelectedHouse::class.java)
+            startActivity(intent)
+        }
     }
 }

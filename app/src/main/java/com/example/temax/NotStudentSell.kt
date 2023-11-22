@@ -113,7 +113,7 @@ class NotStudentSell : AppCompatActivity() {
 
                 // Mostra as EditTexts com base na opção selecionada no Spinner
                 when (selectedItem) {
-                    "Apartment" -> {
+                    "Apartement" -> {
                         kindOfResidence = "Apartment"
                         // ... mostre outras EditTexts conforme necessário para "Apartment"
                         etFloor.visibility = View.VISIBLE
