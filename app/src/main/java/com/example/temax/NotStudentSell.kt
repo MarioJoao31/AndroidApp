@@ -1,5 +1,7 @@
 package com.example.temax
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.media.tv.AdRequest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -159,6 +161,9 @@ class NotStudentSell : AppCompatActivity() {
         }
     }
 
+    fun getSharedPreferences(context: Context): SharedPreferences {
+        return context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
+    }
     fun sellOrRentHouse(view: View) {
         when (kindOfResidence) {
 
@@ -174,9 +179,11 @@ class NotStudentSell : AppCompatActivity() {
                 }
                 Log.d("resposta","estas a chegar aqui?")
 
+                //para ir buscar o token
+                var userId = getSharedPreferences(this).getString("userId",null)!!
                 val createHouseRequest = CreateHouse(
                     //TODO: por aqui o id do user guardado do login
-                    UserID = 1,
+                    UserID = userId.toInt(),
                     //transforma de string para double
                     Price = etPrice.text.toString().toDouble(),
                     Construction_year = etConstruction_year.text.toString().toInt(),
