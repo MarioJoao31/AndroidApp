@@ -2,7 +2,6 @@ package com.example.temax
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.media.tv.AdRequest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,7 +13,6 @@ import android.widget.Switch
 import com.example.temax.adapters.SpinnerItem
 import com.example.temax.adapters.Spinner_Sell_Adapter
 import com.example.temax.classes.CreateHouse
-import com.example.temax.classes.House
 import com.example.temax.services.HouseServices
 import retrofit2.Call
 import retrofit2.Callback
@@ -98,7 +96,7 @@ class NotStudentSell : AppCompatActivity() {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Implemente conforme necessário
+                sellOrRent = 0
             }
         }
 
@@ -191,7 +189,7 @@ class NotStudentSell : AppCompatActivity() {
             "House" -> {
 
                 //para ver se vende ou arrenda
-                var sellOrRentTemp: String = ""
+                var sellOrRentTemp: String
                 if (sellOrRent == 0) {
                     sellOrRentTemp = "Sell"
                 } else {
@@ -199,7 +197,7 @@ class NotStudentSell : AppCompatActivity() {
                 }
 
                 //para ir buscar o token
-                var userId = getSharedPreferences(this).getString("userId",null)!!
+                val userId = getSharedPreferences(this).getString("userId",null)!!
                 val createHouseRequest = CreateHouse(
                     //TODO: por aqui o id do user guardado do login
                     UserID = userId.toInt(),
