@@ -177,7 +177,6 @@ class NotStudentSell : AppCompatActivity() {
                 } else {
                     sellOrRentTemp = "Rent"
                 }
-                Log.d("resposta","estas a chegar aqui?")
 
                 //para ir buscar o token
                 var userId = getSharedPreferences(this).getString("userId",null)!!
