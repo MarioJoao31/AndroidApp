@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ListView
 import com.example.temax.adapters.AdapterListViewBuyProperties
+import com.example.temax.classes.Apartement
 import com.example.temax.classes.House
+import com.example.temax.services.ApartementServices
 import com.example.temax.services.HouseServices
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,7 +23,7 @@ class BuyPropertieListing : AppCompatActivity() {
         val listView = findViewById<ListView>(R.id.listviewBuyProperties)
 
 
-        val BASE_URL = "http://${BuildConfig.API_IP}:3000/house/" // Replace with your API base URL
+        val BASE_URL = "http://${BuildConfig.API_IP}:3000/house/sellHouses/"
 
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -29,14 +31,48 @@ class BuyPropertieListing : AppCompatActivity() {
             .build()
 
         val service = retrofit.create(HouseServices::class.java)
-        val call = service.getAllHouses()
-        call.enqueue( object : Callback<List<House>> {
-            override fun onResponse(call : Call<List<House>>, response: Response<List<House>>){
-                if(response.code() == 200){
-                    val respondeBody = response.body()
-                    val adapter = AdapterListViewBuyProperties(this@BuyPropertieListing,R.layout.custum_listview_annonces,respondeBody.orEmpty())
-                    listView.adapter = adapter
-                    Log.d("resposta",respondeBody.toString())
+
+        val SECOND_URL = "http://${BuildConfig.API_IP}:3000/apartement/sellApartements/"
+
+        val retrofit2: Retrofit = Retrofit.Builder()
+            .baseUrl(SECOND_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service2 = retrofit2.create(ApartementServices::class.java)
+
+        // Execute the first API call
+        val call1 = service.getSellHouses()
+        val call2 = service2.getSellApartements()
+
+        call1.enqueue(object : Callback<List<House>> {
+            override fun onResponse(call: Call<List<House>>, response: Response<List<House>>) {
+                if (response.code() == 200) {
+                    val houseList = response.body()
+
+                    // Make the second API call
+                    call2.enqueue(object : Callback<List<Apartement>> {
+                        override fun onResponse(call: Call<List<Apartement>>, response: Response<List<Apartement>>) {
+                            if (response.code() == 200) {
+                                val apartementList = response.body()
+                                // Combine the results of both calls
+                                val combinedList = (houseList.orEmpty() + apartementList.orEmpty()).toMutableList()
+
+                                // Create and set the adapter with the combined list
+                                val adapter = AdapterListViewBuyProperties(
+                                    this@BuyPropertieListing,
+                                    R.layout.custum_listview_annonces,
+                                    combinedList
+                                )
+                                listView.adapter = adapter
+                            }
+                        }
+
+                        override fun onFailure(call: Call<List<Apartement>>, t: Throwable) {
+                            // Log de erro caso a chamada do ApartementService falhe
+                            Log.e("StudentSellList", "Error fetching Apartements", t)
+                        }
+                    })
                 }
             }
 

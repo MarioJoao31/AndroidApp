@@ -157,7 +157,7 @@
             android:id="@+id/notStudentSell_button_sellHouse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="sellOrRentHouse"
+            android:onClick="sellOrRentPropertie"
             android:text="Button" />
 
     </LinearLayout>

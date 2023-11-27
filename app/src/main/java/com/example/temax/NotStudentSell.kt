@@ -1,5 +1,7 @@
 package com.example.temax
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.media.tv.AdRequest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -73,21 +75,18 @@ class NotStudentSell : AppCompatActivity() {
         val adapter2 = Spinner_Sell_Adapter(this, items2)
         spinner2.adapter = adapter2
 
-        val adapter = Spinner_Sell_Adapter(this, items)
-        spinner.adapter = adapter
-
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        //logica do spinner2 do sell e do rent
+        spinner2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
                 position: Int,
                 id: Long
             ) {
-                val selectedItem = items[position].text
-                val selectedItem2 = items2[position].text
+                val selectedItem = items2[position].text  // Corrected this line
 
-                //guarda se quer arrendar ou vender
-                when (selectedItem2) {
+                // guarda se quer arrendar ou vender
+                when (selectedItem) {
                     "Sell" -> {
                         sellOrRent = 0
                     }
@@ -96,6 +95,29 @@ class NotStudentSell : AppCompatActivity() {
                         sellOrRent = 1
                     }
                 }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Implemente conforme necessário
+            }
+        }
+
+
+
+        val adapter = Spinner_Sell_Adapter(this, items)
+        spinner.adapter = adapter
+
+        //logica do spinner1 do house apartment ou room
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val selectedItem = items[position].text
+
+
 
                 //Room
                 etAvailableKitchen.visibility = View.GONE
@@ -159,7 +181,10 @@ class NotStudentSell : AppCompatActivity() {
         }
     }
 
-    fun sellOrRentHouse(view: View) {
+    fun getSharedPreferences(context: Context): SharedPreferences {
+        return context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
+    }
+    fun sellOrRentPropertie(view: View) {
         when (kindOfResidence) {
 
             //se for House faz request para link diferente
@@ -172,11 +197,12 @@ class NotStudentSell : AppCompatActivity() {
                 } else {
                     sellOrRentTemp = "Rent"
                 }
-                Log.d("resposta","estas a chegar aqui?")
 
+                //para ir buscar o token
+                var userId = getSharedPreferences(this).getString("userId",null)!!
                 val createHouseRequest = CreateHouse(
                     //TODO: por aqui o id do user guardado do login
-                    UserID = 1,
+                    UserID = userId.toInt(),
                     //transforma de string para double
                     Price = etPrice.text.toString().toDouble(),
                     Construction_year = etConstruction_year.text.toString().toInt(),
@@ -223,6 +249,7 @@ class NotStudentSell : AppCompatActivity() {
                     val retroFit2 = response.body()
                     Log.d("resposta",retroFit2.toString())
                     //TODO:meter aqui depois o intent para passar para a dashboard
+
                 }
             }
 

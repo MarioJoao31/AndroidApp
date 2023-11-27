@@ -21,6 +21,12 @@ interface ApartementServices {
     @GET("/apartement/rentApartements")
     fun getRentApartements(): Call<List<Apartement>>
 
+    //PROTOCOL: Get
+    // ROTA: /apartement/sellApartements
+    // DESC: Retorna todas os apartamentos disponíveis para venda
+    @GET("/apartement/sellApartements")
+    fun getSellApartements(): Call<List<Apartement>>
+
     //PROTOCOL: Post
     // ROTA: /apartement/createApartement
     // DESC: Cria apartamento

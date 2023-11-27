@@ -1,25 +1,20 @@
 package com.example.temax.adapters
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ImageView
 import android.widget.TextView
 import com.example.temax.R
+import com.example.temax.classes.Apartement
 import com.example.temax.classes.House
 
-class AdapterListViewBuyProperties(context: Context,resource: Int, objects: List<House> ) :
-    ArrayAdapter<House>(context, resource,objects) {
-
-    private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private val listHouses = mutableListOf<House>()
+class AdapterListViewBuyProperties(context: Context,resource: Int, objects: MutableList<Any> ) :
+    ArrayAdapter<Any>(context, resource,objects) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view: View
-        val vh: MyViewHolder
 
         //serve para melhorar o processo de memoria e de guardar as list views que ja passaram
         if(convertView != null){
@@ -30,33 +25,46 @@ class AdapterListViewBuyProperties(context: Context,resource: Int, objects: List
         }
 
         //serve para fazer referencia a class abaixo
-        vh = view.tag as MyViewHolder
+        val vh: MyViewHolder = view.tag as MyViewHolder
         //serve para ir buscar os valores da lista
-        val house = getItem(position)
+        val propertie = getItem(position)
 
         //verificação se os valores não forem nullos
-        if(house != null){
-            if (house.ListingType == "sell" && house.ListingType == "Sell" ){
-                vh.imagem?.setBackgroundColor(Color.GREEN)
-            }else{
-                vh.imagem?.setBackgroundColor(Color.RED)
+        when (propertie) {
+            is House -> {
+                // If it's a House
+                vh.price?.text = propertie.Price.toString()
+                vh.descricao?.text = propertie.Description
+                vh.elevator?.text = propertie.Elevator
+                vh.wcs?.text = propertie.WCs.toString()
+                vh.totalArea?.text = propertie.Total_lot_area.toString()
             }
-            vh.price?.text = house.Price.toString()
-            vh.descricao?.text = house.Description
-            vh.elevator?.text = house.Elevator
-            vh.wcs?.text = house.WCs.toString()
-            vh.totalArea?.text = house.Total_lot_area.toString()
+            is Apartement -> {
+                // If it's an Apartment (assuming you have an Apartment class)
+                vh.price?.text = propertie.Price.toString()
+                vh.descricao?.text = propertie.Description
+                vh.elevator?.text = propertie.Elevator
+                vh.wcs?.text = propertie.WCs.toString()
+                // Add any additional properties specific to Apartment
+            }
+            else -> {
+                // Handle other types if needed
+                vh.price?.text = ""
+                vh.descricao?.text = ""
+                vh.elevator?.text = ""
+                vh.wcs?.text = ""
+                vh.totalArea?.text = ""
+            }
         }
 
         return view
     }
 
+
 }
 
 //serve para guardar as views
 private class MyViewHolder(view: View?){
-    //image
-    val imagem = view?.findViewById<ImageView>(R.id.image_sell_announce)
     //codigo postal
     val price = view?.findViewById<TextView>(R.id.text_price)
 
