@@ -17,6 +17,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.Serializable
 
 class RentScreen : AppCompatActivity() {
 
@@ -91,65 +92,11 @@ class RentScreen : AppCompatActivity() {
                                     val selectedItem = combinedList[position]
                                     val intent = Intent(this@RentScreen, SelectedHouse::class.java)
 
-                                    if (selectedItem is House) {
-                                        selectedItem.Price?.let { price ->
-                                            intent.putExtra("price", price)
-                                        }
-                                        selectedItem.Description?.let { description ->
-                                            intent.putExtra("description", description)
-                                        }
-                                        selectedItem.WCs?.let { wcs ->
-                                            intent.putExtra("wcs", wcs)
-                                        }
-                                        selectedItem.Postal_code?.let { postal_code ->
-                                            intent.putExtra("postal_code", postal_code)
-                                        }
-                                        selectedItem.Construction_year?.let { construction_year ->
-                                            intent.putExtra("construction_year", construction_year)
-                                        }
-                                        selectedItem.Parking?.let { parking ->
-                                            intent.putExtra("parking", parking)
-                                        }
-                                        selectedItem.Elevator?.let { elevator ->
-                                            intent.putExtra("elevator", elevator)
-                                        }
-                                        selectedItem.Private_gross_area?.let { private_gross_area ->
-                                            intent.putExtra("private_gross_area", private_gross_area)
-                                        }
-                                        selectedItem.Total_lot_area?.let { total_lot_area ->
-                                            intent.putExtra("total_lot_area", total_lot_area)
-                                        }
-                                        selectedItem.Bedrooms?.let { bedrooms ->
-                                            intent.putExtra("bedrooms", bedrooms)
-                                        }
-                                        selectedItem.Title?.let { tittle ->
-                                            intent.putExtra("tittle", tittle)
-                                        }
-                                        selectedItem.Address?.let { address ->
-                                            intent.putExtra("address", address)
-                                        }
 
-                                        // Adicione outros extras conforme necessário para detalhes específicos da casa
-                                    } else if (selectedItem is Apartement) {
-                                        selectedItem.Price?.let { price ->
-                                            intent.putExtra("price", price)
-                                        }
-                                        selectedItem.Description?.let { description ->
-                                            intent.putExtra("description", description)
-                                        }
-                                        selectedItem.WCs?.let { wcs ->
-                                            intent.putExtra("wcs", wcs)
-                                        }
-                                        selectedItem.Postal_code?.let { postal_code ->
-                                            intent.putExtra("postal_code", postal_code)
-                                        }
-                                        selectedItem.Construction_year?.let { construction_year ->
-                                            intent.putExtra("construction_year", construction_year)
-                                        }
-                                        // Adicione outros extras conforme necessário para detalhes específicos do apartamento
+                                    if (selectedItem is House || selectedItem is Apartement) {
+                                        intent.putExtra("selectedItem", selectedItem as Serializable)
+                                        startActivity(intent)
                                     }
-
-                                    startActivity(intent)
                                 }
 
 

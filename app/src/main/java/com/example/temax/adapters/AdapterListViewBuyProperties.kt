@@ -9,9 +9,10 @@ import android.widget.TextView
 import com.example.temax.R
 import com.example.temax.classes.Apartement
 import com.example.temax.classes.House
+import java.io.Serializable
 
-class AdapterListViewBuyProperties(context: Context,resource: Int, objects: MutableList<Any> ) :
-    ArrayAdapter<Any>(context, resource,objects) {
+class AdapterListViewBuyProperties(context: Context,resource: Int, objects: MutableList<Serializable> ) :
+    ArrayAdapter<Serializable>(context, resource,objects) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view: View

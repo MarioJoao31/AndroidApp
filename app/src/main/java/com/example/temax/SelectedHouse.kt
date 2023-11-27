@@ -3,17 +3,37 @@ package com.example.temax
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import com.example.temax.classes.Apartement
+import com.example.temax.classes.House
+import java.io.Serializable
 
 class SelectedHouse : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_selected_house)
 
-        // Recuperar os extras passados pelo Intent
-        val price = intent.getDoubleExtra("price", 0.0)
-        val description = intent.getStringExtra("description")
-        val wcs = intent.getIntExtra("wcs", 0)
-        val postal_code = intent.getStringExtra("postal_code")
+        val selectedItem = intent.getSerializableExtra("selectedItem") as? Serializable
+
+        //criar as variaveis
+        var price: Double ? = 0.0
+        var description: String ? = ""
+        var wcs: Int ? = 0
+        var postal_code : String ?= ""
+
+        //atribui os valores
+        if (selectedItem != null) {
+            if (selectedItem is House) {
+                price = selectedItem.Price ?: 0.0
+                description = selectedItem.Description
+                wcs = selectedItem.WCs ?: 0
+                postal_code = selectedItem.Postal_code
+
+            }
+        }
+
+
+        // tirar tudo daqui para baixo
+
         var construction_year = intent.getIntExtra("construction_year",0)
         var parking = intent.getIntExtra("parking",0)
         var elevator = intent.getStringExtra("elevator")
@@ -22,7 +42,7 @@ class SelectedHouse : AppCompatActivity() {
         var bedrooms = intent.getIntExtra("bedrooms",0)
         var tittle = intent.getStringExtra("tittle")
         var address = intent.getStringExtra("address")
-        // Recupere outros extras conforme necessário
+
 
         // Encontre os TextViews na sua UI
         val textViewPrice = findViewById<TextView>(R.id.textViewPrice)

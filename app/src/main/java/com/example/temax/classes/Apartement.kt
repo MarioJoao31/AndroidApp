@@ -1,6 +1,7 @@
 package com.example.temax.classes
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 class Apartement (@SerializedName("ApartementID") val ApartementID: Int,
                   @SerializedName("UserID") val UserID: Int,
@@ -16,5 +17,5 @@ class Apartement (@SerializedName("ApartementID") val ApartementID: Int,
                   @SerializedName("WCs") val WCs: Int,
                   @SerializedName("ListingType") val ListingType: String,
                   @SerializedName("Title") val Title: String,
-                  @SerializedName("Address") val Address: String) {
+                  @SerializedName("Address") val Address: String): Serializable {
 }
