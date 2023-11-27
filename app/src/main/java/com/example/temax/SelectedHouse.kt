@@ -2,9 +2,11 @@ package com.example.temax
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import com.example.temax.classes.Apartement
 import com.example.temax.classes.House
+import kotlinx.coroutines.selects.select
 import java.io.Serializable
 
 class SelectedHouse : AppCompatActivity() {
@@ -19,6 +21,14 @@ class SelectedHouse : AppCompatActivity() {
         var description: String ? = ""
         var wcs: Int ? = 0
         var postal_code : String ?= ""
+        var construction_year: Int ? = 0
+        var parking: Int ? = 0
+        var elevator: String ? = ""
+        var private_gross_area: Int ? = 0
+        var total_lot_area: Int ? = 0
+        var bedrooms:Int ? = 0
+        var tittle: String ? = ""
+        var address: String ? = ""
 
         //atribui os valores
         if (selectedItem != null) {
@@ -27,22 +37,19 @@ class SelectedHouse : AppCompatActivity() {
                 description = selectedItem.Description
                 wcs = selectedItem.WCs ?: 0
                 postal_code = selectedItem.Postal_code
+                construction_year = selectedItem.Construction_year
+                parking = selectedItem.Parking
+                elevator = selectedItem.Elevator
+                private_gross_area = selectedItem.Private_gross_area
+                total_lot_area = selectedItem.Total_lot_area
+                bedrooms = selectedItem.Bedrooms
+                tittle = selectedItem.Title
+                address = selectedItem.Address
+            }
+            if (selectedItem is Apartement) {
 
             }
         }
-
-
-        // tirar tudo daqui para baixo
-
-        var construction_year = intent.getIntExtra("construction_year",0)
-        var parking = intent.getIntExtra("parking",0)
-        var elevator = intent.getStringExtra("elevator")
-        var private_gross_area = intent.getIntExtra("private_gross_area",0)
-        var total_lot_area = intent.getIntExtra("private_gross_area",0)
-        var bedrooms = intent.getIntExtra("bedrooms",0)
-        var tittle = intent.getStringExtra("tittle")
-        var address = intent.getStringExtra("address")
-
 
         // Encontre os TextViews na sua UI
         val textViewPrice = findViewById<TextView>(R.id.textViewPrice)
@@ -58,6 +65,10 @@ class SelectedHouse : AppCompatActivity() {
         val textViewTittle = findViewById<TextView>(R.id.textViewTittle)
         val textViewAddress = findViewById<TextView>(R.id.textViewAddress)
         // Encontre outros TextViews conforme necessário
+
+        //////////////////////////////////
+        ////////// Visibilidade do screen
+        //////////////////////////////////
 
         // Configure os valores nos TextViews
         if (price != null) {
@@ -77,6 +88,6 @@ class SelectedHouse : AppCompatActivity() {
         textViewBedrooms.text = "$bedrooms"
         textViewTittle.text = "$tittle"
         textViewAddress.text = "$address"
-        // Configure outros TextViews conforme necessári
+        // Configure outros TextViews conforme necessário
     }
 }
