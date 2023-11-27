@@ -19,6 +19,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class RentScreen : AppCompatActivity() {
+
+    private val combinedList = mutableListOf<Any>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rent_screen)
@@ -69,8 +71,10 @@ class RentScreen : AppCompatActivity() {
                             if (response.code() == 200) {
                                 val apartementList = response.body()
 
+                                // Limpa a lista antes de adicionar novos itens
+                                combinedList.clear()
+
                                 // Combina as listas de casas e apartamentos
-                                val combinedList = mutableListOf<Any>()
                                 combinedList.addAll(houseList.orEmpty())
                                 combinedList.addAll(apartementList.orEmpty())
 
@@ -82,6 +86,73 @@ class RentScreen : AppCompatActivity() {
                                         combinedList
                                     )
                                 listView.adapter = adapter
+
+                                listView.setOnItemClickListener { _, _, position, _ ->
+                                    val selectedItem = combinedList[position]
+                                    val intent = Intent(this@RentScreen, SelectedHouse::class.java)
+
+                                    if (selectedItem is House) {
+                                        selectedItem.Price?.let { price ->
+                                            intent.putExtra("price", price)
+                                        }
+                                        selectedItem.Description?.let { description ->
+                                            intent.putExtra("description", description)
+                                        }
+                                        selectedItem.WCs?.let { wcs ->
+                                            intent.putExtra("wcs", wcs)
+                                        }
+                                        selectedItem.Postal_code?.let { postal_code ->
+                                            intent.putExtra("postal_code", postal_code)
+                                        }
+                                        selectedItem.Construction_year?.let { construction_year ->
+                                            intent.putExtra("construction_year", construction_year)
+                                        }
+                                        selectedItem.Parking?.let { parking ->
+                                            intent.putExtra("parking", parking)
+                                        }
+                                        selectedItem.Elevator?.let { elevator ->
+                                            intent.putExtra("elevator", elevator)
+                                        }
+                                        selectedItem.Private_gross_area?.let { private_gross_area ->
+                                            intent.putExtra("private_gross_area", private_gross_area)
+                                        }
+                                        selectedItem.Total_lot_area?.let { total_lot_area ->
+                                            intent.putExtra("total_lot_area", total_lot_area)
+                                        }
+                                        selectedItem.Bedrooms?.let { bedrooms ->
+                                            intent.putExtra("bedrooms", bedrooms)
+                                        }
+                                        selectedItem.Title?.let { tittle ->
+                                            intent.putExtra("tittle", tittle)
+                                        }
+                                        selectedItem.Address?.let { address ->
+                                            intent.putExtra("address", address)
+                                        }
+
+                                        // Adicione outros extras conforme necessário para detalhes específicos da casa
+                                    } else if (selectedItem is Apartement) {
+                                        selectedItem.Price?.let { price ->
+                                            intent.putExtra("price", price)
+                                        }
+                                        selectedItem.Description?.let { description ->
+                                            intent.putExtra("description", description)
+                                        }
+                                        selectedItem.WCs?.let { wcs ->
+                                            intent.putExtra("wcs", wcs)
+                                        }
+                                        selectedItem.Postal_code?.let { postal_code ->
+                                            intent.putExtra("postal_code", postal_code)
+                                        }
+                                        selectedItem.Construction_year?.let { construction_year ->
+                                            intent.putExtra("construction_year", construction_year)
+                                        }
+                                        // Adicione outros extras conforme necessário para detalhes específicos do apartamento
+                                    }
+
+                                    startActivity(intent)
+                                }
+
+
                             }
                         }
 
@@ -90,29 +161,16 @@ class RentScreen : AppCompatActivity() {
                             t: Throwable
                         ) {
                             // Log de erro caso a chamada do ApartementService falhe
-                            Log.e("StudentRentList", "Error fetching Apartements", t)
+                            Log.e("RentScreen", "Error fetching Apartements", t)
                         }
                     })
                 }
             }
 
             override fun onFailure(call: Call<List<House>>, t: Throwable) {
-
-                // Log de erro caso a chamada do ApartementService falhe
-                Log.e("StudentRentList", "Error fetching Houses", t)
+                // Log de erro caso a chamada do HouseService falhe
+                Log.e("RentScreen", "Error fetching Houses", t)
             }
         })
-
-        listView.setOnItemClickListener { _, _, position, _ ->
-            // Iniciar a atividade SelectedHouse e passar os detalhes da casa selecionada através de Intent extras
-            val intent = Intent(this@RentScreen, SelectedHouse::class.java)
-            startActivity(intent)
-        }
-
     }
-
-
-
-
 }
-
