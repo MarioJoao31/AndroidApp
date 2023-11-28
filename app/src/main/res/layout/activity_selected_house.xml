@@ -49,7 +49,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Price: "
+                android:text="Title: "
                 android:textSize="25dp"/>
 
             <TextView
@@ -69,7 +69,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Price: "
+                android:text="Address: "
                 android:textSize="25dp"/>
 
             <TextView
