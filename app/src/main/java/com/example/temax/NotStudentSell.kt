@@ -10,9 +10,12 @@ import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Switch
+import android.widget.Toast
 import com.example.temax.adapters.SpinnerItem
 import com.example.temax.adapters.Spinner_Sell_Adapter
+import com.example.temax.classes.CreateApartement
 import com.example.temax.classes.CreateHouse
+import com.example.temax.services.ApartementServices
 import com.example.temax.services.HouseServices
 import retrofit2.Call
 import retrofit2.Callback
@@ -134,7 +137,7 @@ class NotStudentSell : AppCompatActivity() {
                 // Mostra as EditTexts com base na opção selecionada no Spinner
                 when (selectedItem) {
                     "Apartement" -> {
-                        kindOfResidence = "Apartment"
+                        kindOfResidence = "Apartement"
                         // ... mostre outras EditTexts conforme necessário para "Apartment"
                         etFloor.visibility = View.VISIBLE
                         etWcs.visibility = View.VISIBLE
@@ -183,6 +186,9 @@ class NotStudentSell : AppCompatActivity() {
         return context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
     }
     fun sellOrRentPropertie(view: View) {
+
+        val context = this // Salvar a referência ao contexto da atividade
+
         when (kindOfResidence) {
 
             //se for House faz request para link diferente
@@ -220,10 +226,43 @@ class NotStudentSell : AppCompatActivity() {
                     Address = etAddress.text.toString()
                 )
                 requestCriarCasa(createHouseRequest)
+                // Mostra o Toast informando que a casa foi criada com sucesso
+                showToast(context, "Casa criada com sucesso")
+                finish()
             }
 
             "Apartement" ->{
-                //TODO: criar apartamento e enviar para a base de dados
+
+                // Determina se a propriedade é para venda ou arrendar
+                val sellOrRentTemp = if (sellOrRent == 0) "Sell" else "Rent"
+
+
+                /// Obtém o ID do usuário do SharedPreferences
+                val userId = getSharedPreferences(this).getString("userId", null)!!
+
+                // Criação do objeto Apartement com os dados fornecidos
+                val createApartementRequest = CreateApartement(
+                    UserID = userId.toInt(),
+                    Price = etPrice.text.toString().toDouble(),
+                    Construction_year = etConstruction_year.text.toString().toInt(),
+                    Parking = etParking.text.toString().toInt(),
+                    Elevator = elevatorResult,
+                    Prioraty_level = 3,
+                    Description = etDescription.text.toString(),
+                    Postal_code = etPostal_code.text.toString(),
+                    Floor = etFloor.text.toString().toInt(),
+                    Bedrooms = etBedrooms.text.toString().toInt(),
+                    WCs = etWcs.text.toString().toInt(),
+                    ListingType = sellOrRentTemp,
+                    Title = etTitle.text.toString(),
+                    Address = etAddress.text.toString()
+                )
+
+                // Chama a função para criar o apartamento com os dados fornecidos
+                requestCriarApartamento(createApartementRequest)
+                // Mostra o Toast informando que o apartamento foi criado com sucesso
+                showToast(context, "Apartamento criado com sucesso")
+                finish()
             }
         }
 
@@ -246,7 +285,7 @@ class NotStudentSell : AppCompatActivity() {
                 if(response.code() == 200){
                     val retroFit2 = response.body()
                     Log.d("resposta",retroFit2.toString())
-                    //TODO:meter aqui depois o intent para passar para a dashboard
+
 
                 }
             }
@@ -256,8 +295,58 @@ class NotStudentSell : AppCompatActivity() {
             }
         })
 
-        //TODO: por aqui intent e um toast para depois de criar a casa ir para o dashboard
+
     }
+
+    private fun requestCriarApartamento(createApartementRequest: CreateApartement){
+
+        // URL base para a API do apartamento
+        val BASE_URL = "http://${BuildConfig.API_IP}:3000/apartement/createApartement/"
+
+        // Configurar Retrofit para comunicação com a API
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        // Criar um serviço Retrofit para a interface ApartementServices
+        val service = retrofit.create(ApartementServices::class.java)
+
+        /// Criação da solicitação (request) com o objeto createApartement
+        val call = service.createApartement(createApartementRequest)
+
+        // Executar a solicitação
+        call.enqueue( object : Callback<CreateApartement> {
+            override fun onResponse(call : Call<CreateApartement>, response: Response<CreateApartement>){
+
+                // Verificar se a resposta da API foi bem-sucedida (código 200)
+                if(response.code() == 200){
+                    val retroFit2 = response.body()
+
+                    // Exibir no log para fins de depuração
+                    Log.d("resposta", retroFit2.toString())
+
+
+
+            }
+        }
+
+            override fun onFailure(call: Call<CreateApartement>, t: Throwable) {
+
+                // Em caso de falha na solicitação, exibir mensagem de erro no log
+                Log.e("error", "Falha na solicitação: ${t.message}")
+            }
+        })
+    }
+
+// Função para mostrar um Toast
+private fun showToast(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+}
+
+
+
+
 
 
 
