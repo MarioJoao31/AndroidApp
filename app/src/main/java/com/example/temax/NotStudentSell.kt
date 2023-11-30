@@ -15,8 +15,10 @@ import com.example.temax.adapters.SpinnerItem
 import com.example.temax.adapters.Spinner_Sell_Adapter
 import com.example.temax.classes.CreateApartement
 import com.example.temax.classes.CreateHouse
+import com.example.temax.classes.CreateRoom
 import com.example.temax.services.ApartementServices
 import com.example.temax.services.HouseServices
+import com.example.temax.services.RoomServices
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -264,6 +266,37 @@ class NotStudentSell : AppCompatActivity() {
                 showToast(context, "Apartamento criado com sucesso")
                 finish()
             }
+
+            "Room" ->{
+
+                // Determina se a propriedade é para venda ou arrendar
+                val sellOrRentTemp = if (sellOrRent == 0) "Sell" else "Rent"
+
+                /// Obtém o ID do usuário do SharedPreferences
+                val userId = getSharedPreferences(this).getString("userId", null)!!
+
+                val createRoomRequest = CreateRoom(
+                    UserID = userId.toInt(),
+                    Price = etPrice.text.toString().toDouble(),
+                    Construction_year = etConstruction_year.text.toString().toInt(),
+                    Parking = etParking.text.toString().toInt(),
+                    Elevator = elevatorResult,
+                    Prioraty_level = 3,
+                    Description = etDescription.text.toString(),
+                    Postal_code = etPostal_code.text.toString(),
+                    Num_beds = etNumBeds.text.toString().toInt(),
+                    Private_wc = etPrivateWc.text.toString().toInt(),
+                    Available_kitchen = etAvailableKitchen.text.toString(),
+                    ListingType = sellOrRentTemp,
+                    Shared_room = etSharedRoom.text.toString(),
+                    Title = etTitle.text.toString(),
+                    Address = etAddress.text.toString()
+                )
+
+                requestCriarQuarto(createRoomRequest)
+                showToast(context, "Quarto criado com sucesso")
+                finish()
+            }
         }
 
     }
@@ -332,6 +365,47 @@ class NotStudentSell : AppCompatActivity() {
         }
 
             override fun onFailure(call: Call<CreateApartement>, t: Throwable) {
+
+                // Em caso de falha na solicitação, exibir mensagem de erro no log
+                Log.e("error", "Falha na solicitação: ${t.message}")
+            }
+        })
+    }
+
+    private fun requestCriarQuarto(createRoomRequest: CreateRoom) {
+
+        // URL base para a API do quarto
+        val BASE_URL = "http://${BuildConfig.API_IP}:3000/room/createRoom/"
+
+        // Configurar Retrofit para comunicação com a API
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        // Criar um serviço Retrofit para a interface RoomServices
+        val service = retrofit.create(RoomServices::class.java)
+
+        // Criação da solicitação (request) com o objeto createRoom
+        val call = service.createRoom(createRoomRequest)
+
+        // Executar a solicitação
+        call.enqueue(object : Callback<CreateRoom> {
+            override fun onResponse(call: Call<CreateRoom>, response: Response<CreateRoom>) {
+
+                // Verificar se a resposta da API foi bem-sucedida (código 200)
+                if (response.code() == 200) {
+                    val retroFit2 = response.body()
+
+                    // Exibir no log para fins de depuração
+                    Log.d("resposta", retroFit2.toString())
+
+                    // Faça qualquer coisa com a resposta, se necessário
+
+                }
+            }
+
+            override fun onFailure(call: Call<CreateRoom>, t: Throwable) {
 
                 // Em caso de falha na solicitação, exibir mensagem de erro no log
                 Log.e("error", "Falha na solicitação: ${t.message}")
