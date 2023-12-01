@@ -285,14 +285,14 @@ class NotStudentSell : AppCompatActivity() {
                     Description = etDescription.text.toString(),
                     Postal_code = etPostal_code.text.toString(),
                     Num_beds = etNumBeds.text.toString().toInt(),
-                    Private_wc = etPrivateWc.text.toString().toInt(),
+                    Private_wc = etPrivateWc.text.toString(),
                     Available_kitchen = etAvailableKitchen.text.toString(),
                     ListingType = sellOrRentTemp,
                     Shared_room = etSharedRoom.text.toString(),
                     Title = etTitle.text.toString(),
                     Address = etAddress.text.toString()
                 )
-
+                Log.d("quarto",createRoomRequest.toString())
                 requestCriarQuarto(createRoomRequest)
                 showToast(context, "Quarto criado com sucesso")
                 finish()
