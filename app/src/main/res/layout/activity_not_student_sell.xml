@@ -35,19 +35,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:hint="Price"/>
+            android:hint="Price Ex: 200"/>
 
         <EditText
             android:id="@+id/etTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Title"/>
+            android:hint="Title of publication"/>
 
         <EditText
             android:id="@+id/etAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Address"/>
+            android:hint="Address Ex: Rua do paço"/>
 
 
 
@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Year Of Construction"/>
+            android:hint="Year Of Construction Ex: 2001"/>
 
         <EditText
             android:id="@+id/etParking"
@@ -65,13 +65,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Parking"/>
+            android:hint="Parking Ex: 0 / 1 / 2 ..."/>
 
         <Switch
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Elevator"
+            android:hint="Elevator "
             android:id="@+id/switchElevator"/>
 
         <EditText
@@ -80,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Description"/>
+            android:hint="Description of publication"/>
 
         <EditText
             android:id="@+id/etPostal_code"
@@ -88,69 +88,69 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Postal Code"/>
+            android:hint="Postal Code Ex: 4700-201"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Floor"
+            android:hint="Floor Ex: 3"
             android:id="@+id/EtFloor"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Bedrooms"
+            android:hint="Bedrooms Ex: 1 / 2 / 3 ..."
             android:id="@+id/EtBedrooms"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="WCs"
+            android:hint="WCs Ex: 1 / 2 / 3 ..."
             android:id="@+id/EtWcs"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Private Gross Area"
+            android:hint="Private Gross Area Ex: 2453"
             android:id="@+id/EtPrivateGrossArea"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Total Lot Area"
+            android:hint="Total Lot Area Ex: 5054"
             android:id="@+id/EtTotalLotArea"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Shared Room"
+            android:hint="Shared Room Ex: Sim/Não "
             android:id="@+id/EtSharedRoom"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Number beds"
+            android:hint="Number beds Ex: 1 / 2 / 3 ..."
             android:id="@+id/EtNumBeds"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Private wc"
+            android:hint="Private wc Ex: Sim/Não"
             android:id="@+id/EtPrivateWc"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Available kitchen"
+            android:hint="Available kitchen Ex: Sim/Não"
             android:id="@+id/EtAvailableKitchen"/>
 
         <Button
