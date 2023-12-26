@@ -24,6 +24,21 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        //verifica se esta logado já
+        isLoggedIn()
+    }
+
+    private fun isLoggedIn() {
+        val sp = getSharedPreferences(this@MainActivity)
+        val auth = sp.getString("token", null)
+
+
+        if (auth != null) {
+            Log.d("Filete",auth)
+            val intent = Intent(this@MainActivity, SelectTypeUser::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -110,7 +125,7 @@ class MainActivity : AppCompatActivity() {
 
                     val json = JSONObject(responseBody)
                     //para guardar nas shared pref
-                    getSharedPreferences(this).edit().putString("Token",json.optString("Token")).commit()
+                    getSharedPreferences(this).edit().putString("token",json.optString("token")).commit()
                     getSharedPreferences(this).edit().putString("userId",json.optString("userId")).commit()
 
                     //se os parametros do login estiverem corretos passa para a activity SelectTyoeYser
@@ -123,6 +138,8 @@ class MainActivity : AppCompatActivity() {
 
                         Toast.makeText(this@MainActivity, getString(R.string.login_sucess), Toast.LENGTH_SHORT).show()
                     }
+
+
 
                 }else {
                    runOnUiThread{
