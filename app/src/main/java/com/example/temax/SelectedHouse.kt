@@ -3,9 +3,11 @@ package com.example.temax
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.temax.classes.Apartement
 import com.example.temax.classes.House
+import com.example.temax.classes.Room
 import kotlinx.coroutines.selects.select
 import java.io.Serializable
 
@@ -29,13 +31,18 @@ class SelectedHouse : AppCompatActivity() {
         var bedrooms:Int ? = 0
         var tittle: String ? = ""
         var address: String ? = ""
+        var floor: Int ?= 0
+        var available_kitchen: String ? = ""
+        var private_wc: Int ?= 0
+        var num_beds : Int ?= 0
+        var shared_room : String ?= ""
 
         //atribui os valores
         if (selectedItem != null) {
             if (selectedItem is House) {
-                price = selectedItem.Price ?: 0.0
+                price = selectedItem.Price
                 description = selectedItem.Description
-                wcs = selectedItem.WCs ?: 0
+                wcs = selectedItem.WCs
                 postal_code = selectedItem.Postal_code
                 construction_year = selectedItem.Construction_year
                 parking = selectedItem.Parking
@@ -47,10 +54,34 @@ class SelectedHouse : AppCompatActivity() {
                 address = selectedItem.Address
             }
             if (selectedItem is Apartement) {
+                price = selectedItem.Price
+                description = selectedItem.Description
+                wcs = selectedItem.WCs
+                postal_code = selectedItem.Postal_code
+                construction_year = selectedItem.Construction_year
+                parking = selectedItem.Parking
+                elevator = selectedItem.Elevator
+                bedrooms = selectedItem.Bedrooms
+                tittle = selectedItem.Title
+                address = selectedItem.Address
+                floor = selectedItem.Floor
 
             }
+            if (selectedItem is Room) {
+                price = selectedItem.Price
+                description = selectedItem.Description
+                postal_code = selectedItem.Postal_code
+                construction_year = selectedItem.Construction_year
+                parking = selectedItem.Parking
+                elevator = selectedItem.Elevator
+                tittle = selectedItem.Title
+                address = selectedItem.Address
+                available_kitchen = selectedItem.Available_kitchen
+                private_wc = selectedItem.Private_wc
+                num_beds = selectedItem.Num_beds
+                shared_room = selectedItem.Shared_room
+            }
         }
-
         // Encontre os TextViews na sua UI
         val textViewPrice = findViewById<TextView>(R.id.textViewPrice)
         val textViewDescription = findViewById<TextView>(R.id.textViewDescription)
@@ -64,6 +95,13 @@ class SelectedHouse : AppCompatActivity() {
         val textViewBedrooms = findViewById<TextView>(R.id.textViewBedrooms)
         val textViewTittle = findViewById<TextView>(R.id.textViewTittle)
         val textViewAddress = findViewById<TextView>(R.id.textViewAddress)
+        val textViewFloors = findViewById<TextView>(R.id.textViewFloors)
+        val textViewSharedRoom = findViewById<TextView>(R.id.textViewSharedRoom)
+        val textViewPrivatewcs = findViewById<TextView>(R.id.textViewPrivatewcs)
+        val textViewNumBeds = findViewById<TextView>(R.id.textViewNumBeds)
+        val textViewAvailableKitchen = findViewById<TextView>(R.id.textViewAvailableKitchen)
+
+
         // Encontre outros TextViews conforme necessário
 
         //////////////////////////////////
@@ -74,20 +112,88 @@ class SelectedHouse : AppCompatActivity() {
         if (price != null) {
             textViewPrice.text = "$price"
         } else {
-            // Lógica para lidar com o valor nulo, por exemplo, definir um texto padrão ou vazio
-            textViewPrice.text = "Valor não disponível"
+            textViewPrice.visibility = View.GONE
         }
-        textViewDescription.text = "$description"
-        text_WCs.text = "$wcs"
-        textViewPostalCode.text ="$postal_code"
-        textViewConstructionYear.text = "$construction_year"
-        textViewParking.text = "$parking"
-        textViewElevator.text = "$elevator"
-        textViewPrivateGrossArea.text = "$private_gross_area"
-        textViewTotalLotArea.text = "$total_lot_area"
-        textViewBedrooms.text = "$bedrooms"
-        textViewTittle.text = "$tittle"
-        textViewAddress.text = "$address"
+        if (description != null) {
+            textViewDescription.text = "$description"
+        } else {
+            textViewDescription.visibility = View.GONE
+        }
+        if (wcs != null) {
+            text_WCs.text = "$wcs"
+        } else {
+            text_WCs.visibility = View.GONE
+        }
+        if (postal_code != null) {
+            textViewPostalCode.text ="$postal_code"
+        } else {
+            textViewPostalCode.visibility = View.GONE
+        }
+        if (construction_year != null) {
+            textViewConstructionYear.text = "$construction_year"
+        } else {
+            textViewConstructionYear.visibility = View.GONE
+        }
+        if (parking != null) {
+            textViewParking.text = "$parking"
+        } else {
+            textViewParking.visibility = View.GONE
+        }
+        if (elevator != null) {
+            textViewElevator.text = "$elevator"
+        } else {
+            textViewElevator.visibility = View.GONE
+        }
+        if (private_gross_area != null) {
+            textViewPrivateGrossArea.text = "$private_gross_area"
+        } else {
+            textViewPrivateGrossArea.visibility = View.GONE
+        }
+        if (total_lot_area != null) {
+            textViewTotalLotArea.text = "$total_lot_area"
+        } else {
+            textViewTotalLotArea.visibility = View.GONE
+        }
+        if (bedrooms != null) {
+            textViewBedrooms.text = "$bedrooms"
+        } else {
+            textViewBedrooms.visibility = View.GONE
+        }
+        if (tittle != null) {
+            textViewTittle.text = "$tittle"
+        } else {
+            textViewTittle.visibility = View.GONE
+        }
+        if (address != null) {
+            textViewAddress.text = "$address"
+        } else {
+            textViewAddress.visibility = View.GONE
+        }
+        if (floor != 0) {
+            textViewFloors.text = "$floor"
+        } else {
+            textViewFloors.visibility = View.GONE
+        }
+        if (shared_room != null) {
+            textViewSharedRoom.text = "$shared_room"
+        } else {
+            textViewSharedRoom.visibility = View.GONE
+        }
+        if (available_kitchen != "") {
+            textViewAvailableKitchen.text = "$available_kitchen"
+        } else {
+            textViewAvailableKitchen.visibility = View.GONE
+        }
+        if (private_wc != 0) {
+            textViewPrivatewcs.text = "$private_wc"
+        } else {
+            textViewPrivatewcs.visibility = View.GONE
+        }
+        if (num_beds != 0) {
+            textViewNumBeds.text = "$num_beds"
+        } else {
+            textViewNumBeds.visibility = View.GONE
+        }
         // Configure outros TextViews conforme necessário
     }
 }

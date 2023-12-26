@@ -193,6 +193,7 @@
                 android:textSize="25dp"/>
 
             <TextView
+                android:id="@+id/textViewFloors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="25dp"/>
@@ -288,6 +289,7 @@
                 android:textSize="25dp"/>
 
             <TextView
+                android:id="@+id/textViewSharedRoom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="25dp"/>
@@ -306,6 +308,7 @@
                 android:textSize="25dp"/>
 
             <TextView
+                android:id="@+id/textViewNumBeds"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="25dp"/>
@@ -324,6 +327,7 @@
                 android:textSize="25dp"/>
 
             <TextView
+                android:id="@+id/textViewPrivatewcs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="25dp"/>
@@ -337,11 +341,12 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="Available_Kitchen: "
-                android:textSize="25dp"/>
+                android:textSize="25dp" />
 
             <TextView
+                android:id="@+id/textViewAvailableKitchen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="25dp"/>
