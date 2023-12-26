@@ -20,4 +20,9 @@ class SelectTypeUser : AppCompatActivity() {
         val intent = Intent(this@SelectTypeUser, NotStudentSellOrRentOrBuy::class.java)
         startActivityForResult(intent,1)
     }
+
+    fun GoToDashboardUser(view: View) {
+        val intent = Intent(this@SelectTypeUser, DashboardUser::class.java)
+        startActivityForResult(intent,1)
+    }
 }
