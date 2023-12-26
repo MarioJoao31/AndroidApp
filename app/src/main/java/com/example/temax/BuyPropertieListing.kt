@@ -1,5 +1,6 @@
 package com.example.temax
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import android.widget.ListView
 import com.example.temax.adapters.AdapterListViewBuyProperties
 import com.example.temax.classes.Apartement
 import com.example.temax.classes.House
+import com.example.temax.classes.Room
 import com.example.temax.services.ApartementServices
 import com.example.temax.services.HouseServices
 import retrofit2.Call
@@ -14,6 +16,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.Serializable
 
 class BuyPropertieListing : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +68,17 @@ class BuyPropertieListing : AppCompatActivity() {
                                     combinedList
                                 )
                                 listView.adapter = adapter
+
+                                listView.setOnItemClickListener { _, _, position, _ ->
+                                    val selectedItem = combinedList[position]
+                                    val intent = Intent(this@BuyPropertieListing, SelectedHouse::class.java)
+
+
+                                    if (selectedItem is House || selectedItem is Apartement || selectedItem is Room) {
+                                        intent.putExtra("selectedItem", selectedItem as Serializable)
+                                        startActivity(intent)
+                                    }
+                                }
                             }
                         }
 

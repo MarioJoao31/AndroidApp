@@ -21,4 +21,6 @@ class Room(
             @SerializedName("Title") val Title: String,
             @SerializedName("Address") val Address: String
 
-) : Serializable
+) : Serializable {
+
+}
