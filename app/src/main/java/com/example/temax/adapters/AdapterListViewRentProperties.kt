@@ -48,9 +48,11 @@ class AdapterListViewRentProperties(
             } else {
                 vh.imagem?.setBackgroundColor(Color.GREEN) // Cor padrão para casas
             }
+            vh.title?.text = property.Title
             vh.price?.text = property.Price.toString()
             vh.descricao?.text = property.Description
             vh.elevator?.text = property.Elevator
+            vh.parking?.text = property.Parking.toString()
             vh.wcs?.text = property.WCs.toString()
             vh.totalArea?.text = property.Total_lot_area.toString()
 
@@ -61,9 +63,12 @@ class AdapterListViewRentProperties(
             } else {
                 vh.imagem?.setBackgroundColor(Color.GREEN) // Cor padrão para apartamentos
             }
+
+            vh.title?.text = property.Title
             vh.price?.text = property.Price.toString()
             vh.descricao?.text = property.Description
             vh.elevator?.text = property.Elevator
+            vh.parking?.text = property.Parking.toString()
             vh.wcs?.text = property.WCs.toString()
         }
 
@@ -73,10 +78,12 @@ class AdapterListViewRentProperties(
     // Classe interna para armazenar as views
     private class MyViewHolder(view: View?) {
         val imagem = view?.findViewById<ImageView>(R.id.image_sell_announce)
+        val title = view?.findViewById<TextView>(R.id.text_title)
         val price = view?.findViewById<TextView>(R.id.text_price)
         val wcs = view?.findViewById<TextView>(R.id.text_WCs)
         val totalArea = view?.findViewById<TextView>(R.id.text_total_area)
         val descricao = view?.findViewById<TextView>(R.id.text_description)
         val elevator = view?.findViewById<TextView>(R.id.text_elevator)
+        val parking = view?.findViewById<TextView>(R.id.text_ParkingVariable)
     }
 }

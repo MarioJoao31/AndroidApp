@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/image_sell_announce"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
         android:scaleType="centerCrop"
         android:src="@mipmap/ic_house" />
 
@@ -18,12 +18,22 @@
         android:layout_marginStart="16dp">
 
         <TextView
+            android:id="@+id/text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            android:textColor="#000000"
+
+            android:text="titulo" />
+        <TextView
             android:id="@+id/text_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#000000"
+
             android:text="1212313" />
 
         <TextView
@@ -32,7 +42,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="#555555"
-            android:text="Descrição da casa" />
+            android:text="desc" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -55,7 +65,7 @@
             android:textSize="14sp"
             android:textColor="#555555"
 
-            android:text="3" />
+            android:text="" />
 
         <TextView
             android:id="@+id/text_fixed2"
@@ -81,6 +91,28 @@
             android:textColor="#555555"
 
             android:text=" " />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView
+            android:id="@+id/text_fixed5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#555555"
+
+            android:text="Parking: " />
+
+        <TextView
+            android:id="@+id/text_ParkingVariable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#555555"
+
+            android:text="" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
