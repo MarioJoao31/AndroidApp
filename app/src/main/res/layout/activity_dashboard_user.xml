@@ -51,6 +51,8 @@
         android:background="@drawable/custom_background_button_color"/>
 
     <Button
+        android:id="@+id/logoutButton"
+        android:onClick="logoutOnClick"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Logout"
