@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Temax"
         tools:targetApi="31">
         <activity
+            android:name=".PaymentScreen"
+            android:exported="false" />
+        <activity
             android:name=".DashboardUser"
             android:exported="false" />
         <activity

@@ -30,6 +30,23 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp" />
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:scaleType="fitCenter"
+            android:src="@android:drawable/ic_dialog_info" />
+
+        <Button
+            android:id="@+id/selectImageButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Select Image"
+            android:onClick="selectImage" />
+
         <EditText
             android:id="@+id/etPrice"
             android:layout_width="match_parent"

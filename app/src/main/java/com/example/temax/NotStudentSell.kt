@@ -2,15 +2,16 @@ package com.example.temax
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Switch
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.temax.adapters.SpinnerItem
 import com.example.temax.adapters.Spinner_Sell_Adapter
 import com.example.temax.classes.CreateApartement
@@ -25,12 +26,12 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
 class NotStudentSell : AppCompatActivity() {
     //variavel para
     var sellOrRent: Int = 0
     var kindOfResidence: String = ""
     var elevatorResult: String = ""
-
 
     //link para os et
     private val spinner by lazy { findViewById<Spinner>(R.id.myspinner) }
@@ -119,7 +120,6 @@ class NotStudentSell : AppCompatActivity() {
                 id: Long
             ) {
                 val selectedItem = items[position].text
-
 
 
                 //Room
