@@ -1,5 +1,6 @@
 package com.example.temax
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -195,5 +196,10 @@ class SelectedHouse : AppCompatActivity() {
             textViewNumBeds.visibility = View.GONE
         }
         // Configure outros TextViews conforme necessário
+    }
+
+    fun GoToComments (view: View){
+        val intent = Intent(this@SelectedHouse, CommentsScreen::class.java)
+        startActivityForResult(intent,1)
     }
 }
