@@ -39,7 +39,9 @@
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/custom_background_button_color"/>
+        android:background="@drawable/custom_background_button_color"
+        android:onClick="SelectBuyService"
+        />
 
     <Button
         android:layout_width="match_parent"
