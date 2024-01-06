@@ -13,6 +13,8 @@ import kotlinx.coroutines.selects.select
 import java.io.Serializable
 
 class SelectedHouse : AppCompatActivity() {
+
+    private var houseID: Int = 0 // Variável de classe para armazenar houseID
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_selected_house)
@@ -53,6 +55,7 @@ class SelectedHouse : AppCompatActivity() {
                 bedrooms = selectedItem.Bedrooms
                 tittle = selectedItem.Title
                 address = selectedItem.Address
+                houseID = selectedItem.HouseID
             }
             if (selectedItem is Apartement) {
                 price = selectedItem.Price
@@ -196,10 +199,12 @@ class SelectedHouse : AppCompatActivity() {
             textViewNumBeds.visibility = View.GONE
         }
         // Configure outros TextViews conforme necessário
+
     }
 
     fun GoToComments (view: View){
         val intent = Intent(this@SelectedHouse, CommentsScreen::class.java)
-        startActivityForResult(intent,1)
+        intent.putExtra("houseID", houseID)
+        startActivity(intent)
     }
 }

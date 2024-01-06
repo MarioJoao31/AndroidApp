@@ -6,15 +6,10 @@ import CommentAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
-import com.example.temax.adapters.AdapterListViewRentProperties
-import com.example.temax.classes.House
 import com.example.temax.services.CommentService
-import com.example.temax.services.HouseServices
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,13 +17,22 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class CommentsScreen : AppCompatActivity() {
+    private lateinit var commentService: CommentService
+
+    data class CreateComment(
+        val userID: Int, // substitua pelo ID do usuário que está fazendo o comentário
+        val commentText: String // substitua pelo texto do comentário
+        // adicione outros campos conforme necessário pelo seu serviço
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_comments_screen)
 
+        val houseID = intent.getIntExtra("houseID", 0)
 
         val listView = findViewById<ListView>(R.id.listview_comments)
-
+        val btnSendComment = findViewById<Button>(R.id.btn_send_comment)
         val commentBaseUrl = "http://${BuildConfig.API_IP}:3000/house/rentHouses/"
 
         // Configuração do Retrofit para o commentService
@@ -37,9 +41,12 @@ class CommentsScreen : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        val commentService = commentRetrofit.create(CommentService::class.java)
+        commentService = commentRetrofit.create(CommentService::class.java)
 
-        val callComments = commentService.getAllComments()
+        Log.d("CommentsScreen", "houseID: ${houseID}")
+
+        var HouseID = houseID
+        val callComments = commentService.getCommentsByHouseID(HouseID)
 
         // Callback para a resposta do serviço getRentHouses()
         callComments.enqueue(object : Callback<List<Comment>> {
@@ -57,7 +64,11 @@ class CommentsScreen : AppCompatActivity() {
                     }
                 } else {
                     // Também é possível exibir uma mensagem ao usuário, informando sobre o problema
-                    Toast.makeText(this@CommentsScreen, "Estamos Com problema a carregar os coments", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@CommentsScreen,
+                        "Estamos com problema ao carregar os comentários",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
@@ -67,9 +78,15 @@ class CommentsScreen : AppCompatActivity() {
                 Log.e("CommentsScreen", "Erro ao carregar comentários", t)
 
                 // Também é possível exibir uma mensagem ao usuário, informando sobre o problema
-                Toast.makeText(this@CommentsScreen, "Falha ao carregar comentários", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@CommentsScreen,
+                    "Falha ao carregar comentários",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
-
     }
+
+
+
 }
