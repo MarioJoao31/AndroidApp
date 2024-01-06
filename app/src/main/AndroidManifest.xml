@@ -21,6 +21,9 @@
             android:name=".PaymentScreen"
             android:exported="false" />
         <activity
+            android:name=".BuyServiceTopo"
+            android:exported="false" />
+        <activity
             android:name=".DashboardUser"
             android:exported="false" />
         <activity
