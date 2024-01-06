@@ -9,6 +9,10 @@ interface CommentService {
     @GET("/comments")
     fun getAllComments(): Call<List<Comment>>
 
-    @GET("/comments/{HouseID}")
+    @GET("/comments/house/{HouseID}")
     fun getCommentsByHouseID(@Path("HouseID") HouseID: Int): Call<List<Comment>>
+
+    // Endpoint para obter comentários por ApartmentID
+    @GET("/comments/apartment/{ApartmentID}")
+    fun getCommentsByApartmentID(@Path("ApartmentID") ApartmentID: Int): Call<List<Comment>>
 }

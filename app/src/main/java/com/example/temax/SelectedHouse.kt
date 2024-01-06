@@ -14,7 +14,8 @@ import java.io.Serializable
 
 class SelectedHouse : AppCompatActivity() {
 
-    private var houseID: Int = 0 // Variável de classe para armazenar houseID
+    private var houseID: Int ?= 0 // Variável de classe para armazenar houseID
+    private var apartementID: Int ?= 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_selected_house)
@@ -69,6 +70,7 @@ class SelectedHouse : AppCompatActivity() {
                 tittle = selectedItem.Title
                 address = selectedItem.Address
                 floor = selectedItem.Floor
+                apartementID = selectedItem.ApartementID
 
             }
             if (selectedItem is Room) {
@@ -205,6 +207,7 @@ class SelectedHouse : AppCompatActivity() {
     fun GoToComments (view: View){
         val intent = Intent(this@SelectedHouse, CommentsScreen::class.java)
         intent.putExtra("houseID", houseID)
+        intent.putExtra("apartementID", apartementID)
         startActivity(intent)
     }
 }
