@@ -29,6 +29,8 @@
         android:background="@drawable/custom_background_button_color"/>
 
     <Button
+        android:id="@+id/topButton"
+        android:onClick="buyServiceTopOnClick"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Buy Service Top"

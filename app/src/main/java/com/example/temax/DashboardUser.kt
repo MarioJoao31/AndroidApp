@@ -33,4 +33,12 @@ class DashboardUser : AppCompatActivity() {
         finish() // Fecha a atividade atual
 
     }
+
+
+    fun buyServiceTopOnClick(view: View) {
+
+        // Open ServiceTopActivity
+        val intent = Intent(this, ServiceTop::class.java)
+        startActivity(intent)
+    }
 }

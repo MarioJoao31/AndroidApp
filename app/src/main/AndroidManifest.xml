@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Temax"
         tools:targetApi="31">
         <activity
+            android:name=".ServiceTop"
+            android:exported="false" />
+        <activity
             android:name=".CommentsScreen"
             android:exported="false" />
         <activity
