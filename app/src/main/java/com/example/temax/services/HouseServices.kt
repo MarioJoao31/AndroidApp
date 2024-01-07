@@ -6,11 +6,16 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface HouseServices {
 
     @GET("/house")
     fun getAllHouses(): Call<List<House>>
+
+    @GET("/house/{userID}")
+    fun getUserHouses(@Path("userID") userID: Int): Call<List<House>>
+
 
     //PROTOCOL: Get
     // ROTA: /house/rentHouses

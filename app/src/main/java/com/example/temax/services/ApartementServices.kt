@@ -2,10 +2,12 @@ package com.example.temax.services
 
 import com.example.temax.classes.Apartement
 import com.example.temax.classes.CreateApartement
+import com.example.temax.classes.House
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApartementServices {
 
@@ -14,6 +16,9 @@ interface ApartementServices {
     // DESC: Retorna todos os apartamentos disponíveis
     @GET("/apartement")
     fun getAllApartements(): Call<List<Apartement>>
+
+    @GET("/apartement/{userID}")
+    fun getUserApartments(@Path("userID") userID: Int): Call<List<Apartement>>
 
     //PROTOCOL: Get
     // ROTA: /apartement/rentApartements
