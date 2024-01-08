@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Temax"
         tools:targetApi="31">
         <activity
+            android:name=".ListPayments"
+            android:exported="false" />
+        <activity
             android:name=".ServiceTop"
             android:exported="false" />
         <activity
