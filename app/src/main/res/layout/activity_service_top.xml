@@ -33,18 +33,27 @@
         android:layout_marginTop="24dp" />
 
     <Switch
+        android:id="@+id/SwitchPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:minHeight="48dp"
         android:text="@string/ser_cobrado_um_valor_de_15" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
+    <TextView
+        android:id="@+id/textViewTipoPagamento"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:hint="Tipo de pagamento"
-         />
+        android:gravity="center"
+        android:text="Tipo pagamento"
+        android:textSize="18sp" />
+
+    <Spinner
+        android:id="@+id/spinnerSelectTypePayment"
+        android:layout_width="300dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp" />
 
     <Button
         android:id="@+id/btnPagar"
@@ -52,6 +61,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="24dp"
         android:backgroundTint="@color/custom_button_color"
+        android:onClick="executePayment"
         android:text="Pagar" />
 
 </LinearLayout>

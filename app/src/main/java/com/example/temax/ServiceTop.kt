@@ -3,15 +3,23 @@ package com.example.temax
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
 import android.widget.Spinner
+import android.widget.Switch
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.temax.adapters.AdapterSpinnerServiceTop
+import com.example.temax.adapters.SpinnerItem
 import com.example.temax.adapters.SpinnerResidenceServiceTop
+import com.example.temax.adapters.Spinner_Sell_Adapter
 import com.example.temax.classes.Apartement
+import com.example.temax.classes.CreatePayment
 import com.example.temax.classes.House
 import com.example.temax.classes.Room
 import com.example.temax.services.ApartementServices
 import com.example.temax.services.HouseServices
+import com.example.temax.services.PaymentServices
 import com.example.temax.services.RoomServices
 import retrofit2.Call
 import retrofit2.Callback
@@ -19,11 +27,62 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
 
 class ServiceTop : AppCompatActivity() {
+
+    private val spinnerTypePayment by lazy { findViewById<Spinner>(R.id.spinnerSelectTypePayment) }
+    private var selectedTypePayment: String = ""
+    private val switchPrice by lazy { findViewById<Switch>(R.id.SwitchPrice) }
+    private var isSwitchPriceChecked: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_service_top)
+
+        val spinnerPayment = listOf(
+            SpinnerItem("MB WAY", R.mipmap.mbway),
+            SpinnerItem("PayPal", R.mipmap.paypal),
+            SpinnerItem("Multibanco", R.mipmap.multibanco)
+            // Adicione mais itens conforme necessário
+        )
+
+        //Reutilizei um Adapter, do sell, porque chegava para o que queria.
+        val paymentAdapter  = Spinner_Sell_Adapter(this, spinnerPayment)
+        spinnerTypePayment.adapter = paymentAdapter
+
+        // Define um listener para o spinnerTypePayment
+        spinnerTypePayment.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                // Obtém o tipo de pagamento selecionado
+                selectedTypePayment = (spinnerTypePayment.selectedItem as SpinnerItem).text
+
+                //para ver se está a funcionar
+                Log.d("ServiceTop", "Tipo de pagamento selecionado: $selectedTypePayment")
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>?) {
+                // Trata a situação em que nada é selecionado (se necessário)
+            }
+        })
+
+        // Encontra o switch no layout da activity
+        switchPrice.setOnCheckedChangeListener { _, isChecked ->
+            // Atualiza o estado do switch
+            isSwitchPriceChecked = isChecked
+            // Verifica se o switch está ativado e define o preço conforme necessário
+            val price = if (isSwitchPriceChecked) 15.0 else 0.0
+            Log.d("ServiceTop", "Preço do pagamento: $price")
+        }
 
         // Encontra o spinner no layout da activity
         val spinner = findViewById<Spinner>(R.id.spinnerSelectResidence)
@@ -86,8 +145,6 @@ class ServiceTop : AppCompatActivity() {
                             if (response.code() == 200) {
                                 val apartementList = response.body()
 
-                                // Chamada do serviço getRentRooms proveniente do RoomServices
-                                val callRooms = roomService.getUserRooms(userID)
 
                                 // Callback para a resposta do serviço getRentRooms()
                                 callRooms.enqueue(object : Callback<List<Room>> {
@@ -150,5 +207,79 @@ class ServiceTop : AppCompatActivity() {
             }
         })
 
+
+
+
+
     }
+
+    fun executePayment(view: View) {
+
+        val context = this // Salvar a referência ao contexto da atividade
+
+        // Obtem o userID do SharedPreferences
+        val userID = getSharedPreferences("Temax", Context.MODE_PRIVATE)
+            .getString("userId", null)?.toIntOrNull() ?: -1 // -1 é um valor padrão
+
+        val price = if (isSwitchPriceChecked) 15.0 else 0.0
+
+        val currentTime = getCurrentDateTime()
+
+        val createPaymentRequest = CreatePayment(
+            UserID = userID.toInt(),
+            Price = price,
+            Status = "Pago",
+            Type_Payment = selectedTypePayment,
+            Date = currentTime,
+        )
+
+        //Chama a função para criar o pagamento com os dados fornecidos
+        requestCriarPayment(createPaymentRequest)
+
+        //Mostra o Toast a informar que o pagamento foi bem sucedido
+        showToast(context, "Pagamento criado com sucesso")
+        finish()
+
+
+
+    }
+}
+
+private fun requestCriarPayment(createPaymentRequest: CreatePayment){
+
+    val BASE_URL = "http://${BuildConfig.API_IP}:3000/payment/createPayment/"
+
+    val retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    val service = retrofit.create(PaymentServices::class.java)
+
+    //Cria o request com o createPayment object
+    val call = service.createPayment(createPaymentRequest)
+
+    call.enqueue(object : Callback<CreatePayment> {
+
+        override fun onResponse(call: Call<CreatePayment>, response: Response<CreatePayment>) {
+
+            if (response.code() == 200){
+                val retroFit2 = response.body()
+                Log.d("request payment", retroFit2.toString())
+            }
+        }
+
+        override fun onFailure(call: Call<CreatePayment>, t: Throwable) {
+            print("error")
+        }
+    })
+}
+
+private fun getCurrentDateTime(): String {
+    val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+    val currentDate = Date()
+    return sdf.format(currentDate) // Retorna a data e hora formatada
+}
+private fun showToast(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
