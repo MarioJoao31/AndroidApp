@@ -1,57 +1,57 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
     tools:context=".ServiceTop">
 
     <TextView
         android:id="@+id/textViewTitle"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="Serviço para o Topo"
         android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textViewSubtitle"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="144dp"
-        android:layout_marginEnd="124dp"
+        android:layout_marginTop="24dp"
         android:gravity="center"
         android:text="Selecione a sua residencia:"
-        android:textSize="18sp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewTitle" />
+        android:textSize="18sp" />
 
     <Spinner
         android:id="@+id/spinnerSelectResidence"
-        android:layout_width="257dp"
-        android:layout_height="42dp"
+        android:layout_width="300dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.473"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewSubtitle" />
+        android:minHeight="48dp"
+        android:text="@string/ser_cobrado_um_valor_de_15" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:hint="Tipo de pagamento"
+         />
 
     <Button
         android:id="@+id/btnPagar"
-        android:layout_width="302dp"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_marginTop="24dp"
         android:backgroundTint="@color/custom_button_color"
-        android:text="Pagar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spinnerSelectResidence"
-        app:layout_constraintVertical_bias="0.857" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:text="Pagar" />
+
+</LinearLayout>
