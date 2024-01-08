@@ -6,6 +6,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface PaymentServices {
 
@@ -15,6 +16,8 @@ interface PaymentServices {
     @GET("/payment")
     fun findAll(): Call<List<Payment>>
 
+    @GET("/payment/{userID}")
+    fun getUserPayPayment(@Path("userID") userID: Int): Call<List<Payment>>
 
     //PROTOCOL: Post
     // ROTA: /payment/createPayment
