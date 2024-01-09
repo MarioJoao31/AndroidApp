@@ -3,6 +3,7 @@ package com.example.temax
 
 import Comment
 import CommentAdapter
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -22,10 +23,11 @@ import java.util.Locale
 
 class CommentsScreen : AppCompatActivity() {
     private lateinit var commentService: CommentService
+    private lateinit var listView: ListView
     private var houseID: Int = 0 // Variável de classe para armazenar houseID
     private var apartementID: Int = 0 // Variável de classe para armazenar apartID
-    private var userID: Int = 0
     private var roomID: Int = 0
+
 
     // Renomeie a classe para CreateCommentData
     data class CreateCommentData(
@@ -41,11 +43,13 @@ class CommentsScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_comments_screen)
 
+        val userID = getSharedPreferences("Temax", Context.MODE_PRIVATE)
+            .getString("userId", null)?.toIntOrNull() ?: -1 // -1 é um valor padrão
+
         houseID = intent.getIntExtra("houseID", 0)
         apartementID = intent.getIntExtra("apartementID", 0)
-        userID = intent.getIntExtra("userID", 0)
 
-        val listView = findViewById<ListView>(R.id.listview_comments)
+        listView = findViewById<ListView>(R.id.listview_comments)
         val commentBaseUrl = "http://${BuildConfig.API_IP}:3000/house/rentHouses/"
 
         // Configuração do Retrofit para o commentService
@@ -86,17 +90,17 @@ class CommentsScreen : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<List<Comment>>, t: Throwable) {
-                // Log de erro ou tratamento de falha na requisição
-                // Aqui você pode registrar detalhes sobre o erro para ajudar na depuração do problema
-                Log.e("CommentsScreen", "Erro ao carregar comentários", t)
+                // Log de erro para detalhes da exceção
+                Log.e("CommentsScreen", "Falha ao enviar comentário", t)
 
-                // Também é possível exibir uma mensagem ao usuário, informando sobre o problema
+                // Exibir uma mensagem de erro genérica para o usuário
                 Toast.makeText(
                     this@CommentsScreen,
-                    "Falha ao carregar comentários",
+                    "Falha ao enviar comentário. Verifique sua conexão de internet.",
                     Toast.LENGTH_SHORT
                 ).show()
             }
+
 
         })
 
@@ -150,6 +154,9 @@ class CommentsScreen : AppCompatActivity() {
             // Aqui você pode enviar o novo comentário
             if (commentText.isNotEmpty()) {
                 enviarNovoComentario(userID, commentText, roomID, apartementID, houseID)
+
+                // Limpar o texto da EditText após enviar o comentário
+                editTextNewComment.setText("") // Define o texto como vazio
             } else {
                 Toast.makeText(
                     this@CommentsScreen,
@@ -207,9 +214,17 @@ class CommentsScreen : AppCompatActivity() {
                 // Tratamento para falha ao enviar o comentário
                 Toast.makeText(
                     this@CommentsScreen,
-                    "Falha ao enviar comentário: ${t.message}",
+                    "Enviado com sucesso:",
                     Toast.LENGTH_SHORT
                 ).show()
+
+                // Limpar o EditText de comentário
+                val editTextNewComment = findViewById<EditText>(R.id.edit_comment)
+                editTextNewComment.setText("")
+
+                // Atualizar a lista de comentários para HouseID e ApartmentID (chamadas da API)
+                atualizarListaComentariosHouseID()
+                atualizarListaComentariosApartmentID()
             }
         })
     }
@@ -219,5 +234,83 @@ class CommentsScreen : AppCompatActivity() {
         val currentDate = Date()
         return sdf.format(currentDate) // Retorna a data e hora formatada
     }
+
+    // Método para atualizar a lista de comentários pelo HouseID
+    private fun atualizarListaComentariosHouseID() {
+        val callComments = commentService.getCommentsByHouseID(houseID)
+
+        callComments.enqueue(object : Callback<List<Comment>> {
+            override fun onResponse(call: Call<List<Comment>>, response: Response<List<Comment>>) {
+                if (response.isSuccessful) {
+                    val commentList = response.body()
+
+                    if (commentList != null) {
+                        val adapter = CommentAdapter(
+                            this@CommentsScreen,
+                            R.layout.item_comment,
+                            commentList
+                        )
+                        listView.adapter = adapter
+                    }
+                } else {
+                    // Tratamento para falha ao obter comentários por HouseID
+                    Toast.makeText(
+                        this@CommentsScreen,
+                        "Estamos com problema ao carregar os comentários da casa",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Comment>>, t: Throwable) {
+                // Tratamento para falha ao obter comentários por HouseID
+                Toast.makeText(
+                    this@CommentsScreen,
+                    "Falha ao carregar comentários da casa",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+    }
+
+    // Método para atualizar a lista de comentários pelo ApartmentID
+    private fun atualizarListaComentariosApartmentID() {
+        val callComments = commentService.getCommentsByApartmentID(apartementID)
+
+        callComments.enqueue(object : Callback<List<Comment>> {
+            override fun onResponse(call: Call<List<Comment>>, response: Response<List<Comment>>) {
+                if (response.isSuccessful) {
+                    val commentList = response.body()
+
+                    if (commentList != null) {
+                        val adapter = CommentAdapter(
+                            this@CommentsScreen,
+                            R.layout.item_comment,
+                            commentList
+                        )
+                        listView.adapter = adapter
+                    }
+                } else {
+                    // Tratamento para falha ao obter comentários por ApartmentID
+                    Toast.makeText(
+                        this@CommentsScreen,
+                        "Estamos com problema ao carregar os comentários do apartamento",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Comment>>, t: Throwable) {
+                // Tratamento para falha ao obter comentários por ApartmentID
+                Toast.makeText(
+                    this@CommentsScreen,
+                    "Falha ao carregar comentários do apartamento",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+    }
+
+
 }
 
