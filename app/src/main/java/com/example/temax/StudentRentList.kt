@@ -51,7 +51,7 @@ class StudentRentList : AppCompatActivity() {
         val apartementService = apartementRetrofit.create(ApartementServices::class.java)
 
         // URL para a função de quartos para arrendar
-        val roomBaseUrl = "http://${BuildConfig.API_IP}:3000//room/rentRooms/"
+        val roomBaseUrl = "http://${BuildConfig.API_IP}:3000/room/rentRooms/"
 
         // Configuração do Retrofit para o roomService
         val roomRetrofit: Retrofit = Retrofit.Builder()

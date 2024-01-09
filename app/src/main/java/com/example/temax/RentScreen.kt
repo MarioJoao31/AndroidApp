@@ -10,8 +10,10 @@ import com.example.temax.adapters.AdapterListViewRentProperties
 import com.example.temax.adapters.ListViewSellAnnounceAdapter
 import com.example.temax.classes.Apartement
 import com.example.temax.classes.House
+import com.example.temax.classes.Room
 import com.example.temax.services.ApartementServices
 import com.example.temax.services.HouseServices
+import com.example.temax.services.RoomServices
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -51,11 +53,26 @@ class RentScreen : AppCompatActivity() {
 
         val apartementService = apartementRetrofit.create(ApartementServices::class.java)
 
+        // URL para a função de quartos para arrendar
+        val roomBaseUrl = "http://${BuildConfig.API_IP}:3000/room/rentRooms/"
+
+        // Configuração do Retrofit para o roomService
+        val roomRetrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(roomBaseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val roomService = roomRetrofit.create(RoomServices::class.java)
+
         // Chamada do serviço getRentHouses proveniente do HouseServices
         val callHouses = houseService.getRentHouses()
 
         // Chamada do serviço getRentApartements proveniente do ApartementServices
         val callApartements = apartementService.getRentApartements()
+
+        // Chamada do serviço getRentRooms proveniente do RoomServices
+        val callRooms = roomService.getRentRooms()
+
 
         // Callback para a resposta do serviço getRentHouses()
         callHouses.enqueue(object : Callback<List<House>> {
@@ -63,7 +80,7 @@ class RentScreen : AppCompatActivity() {
                 if (response.code() == 200) {
                     val houseList = response.body()
 
-                    // Callback para a resposta do serviço getRentApartements
+                    // Chamada do serviço getRentApartements
                     callApartements.enqueue(object : Callback<List<Apartement>> {
                         override fun onResponse(
                             call: Call<List<Apartement>>,
@@ -72,43 +89,67 @@ class RentScreen : AppCompatActivity() {
                             if (response.code() == 200) {
                                 val apartementList = response.body()
 
-                                // Limpa a lista antes de adicionar novos itens
-                                combinedList.clear()
+                                // Chamada do serviço getRentRooms
+                                callRooms.enqueue(object : Callback<List<Room>> {
+                                    override fun onResponse(
+                                        call: Call<List<Room>>,
+                                        response: Response<List<Room>>
+                                    ) {
+                                        if (response.code() == 200) {
+                                            val roomList = response.body()
 
-                                // Combina as listas de casas e apartamentos
-                                combinedList.addAll(houseList.orEmpty())
-                                combinedList.addAll(apartementList.orEmpty())
+                                            // Combina as listas de casas, apartamentos e quartos
+                                            val combinedList = mutableListOf<Any>()
+                                            combinedList.addAll(houseList.orEmpty())
+                                            combinedList.addAll(apartementList.orEmpty())
+                                            combinedList.addAll(roomList.orEmpty())
 
-                                // Configuração do AdapterListViewRentProperties com a lista combinada
-                                val adapter =
-                                    AdapterListViewRentProperties(
-                                        this@RentScreen,
-                                        R.layout.activity_student_rent_list,
-                                        combinedList
-                                    )
-                                listView.adapter = adapter
+                                            // Ordene a lista combinada com base no nível de prioridade
+                                            combinedList.sortBy {
+                                                when (it) {
 
-                                listView.setOnItemClickListener { _, _, position, _ ->
-                                    val selectedItem = combinedList[position]
-                                    val intent = Intent(this@RentScreen, SelectedHouse::class.java)
+                                                    is House -> it.Prioraty_level
+                                                    is Apartement -> it.Prioraty_level
+                                                    is Room -> it.Prioraty_level
 
+                                                    else -> 3 // Defina um valor padrão para outros tipos
+                                                }
+                                            }
 
-                                    if (selectedItem is House || selectedItem is Apartement) {
-                                        intent.putExtra("selectedItem", selectedItem as Serializable)
-                                        startActivity(intent)
+                                            // Configuração do AdapterListViewRentProperties com a lista combinada
+                                            val adapter =
+                                                AdapterListViewRentProperties(
+                                                    this@RentScreen,
+                                                    R.layout.activity_student_rent_list,
+                                                    combinedList
+                                                )
+                                            listView.adapter = adapter
+
+                                            listView.setOnItemClickListener { _, _, position, _ ->
+                                                val selectedItem = combinedList[position]
+                                                val intent =
+                                                    Intent(this@RentScreen, SelectedHouse::class.java)
+
+                                                if (selectedItem is House || selectedItem is Apartement || selectedItem is Room) {
+
+                                                    intent.putExtra("selectedItem", selectedItem as Serializable)
+                                                    startActivity(intent)
+                                                }
+                                            }
+                                        }
                                     }
-                                }
 
-
+                                    override fun onFailure(call: Call<List<Room>>, t: Throwable) {
+                                        // Log de erro caso a chamada do RoomService falhe
+                                        Log.e("StudentRentList", "Error fetching Rooms", t)
+                                    }
+                                })
                             }
                         }
 
-                        override fun onFailure(
-                            call: Call<List<Apartement>>,
-                            t: Throwable
-                        ) {
+                        override fun onFailure(call: Call<List<Apartement>>, t: Throwable) {
                             // Log de erro caso a chamada do ApartementService falhe
-                            Log.e("RentScreen", "Error fetching Apartements", t)
+                            Log.e("StudentRentList", "Error fetching Apartements", t)
                         }
                     })
                 }
@@ -116,7 +157,7 @@ class RentScreen : AppCompatActivity() {
 
             override fun onFailure(call: Call<List<House>>, t: Throwable) {
                 // Log de erro caso a chamada do HouseService falhe
-                Log.e("RentScreen", "Error fetching Houses", t)
+                Log.e("StudentRentList", "Error fetching Houses", t)
             }
         })
     }
