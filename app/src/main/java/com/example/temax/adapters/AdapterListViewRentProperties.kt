@@ -11,6 +11,7 @@ import android.widget.TextView
 import com.example.temax.R
 import com.example.temax.classes.Apartement
 import com.example.temax.classes.House
+import com.example.temax.classes.Room
 
 class AdapterListViewRentProperties(
     context: Context,
@@ -70,6 +71,23 @@ class AdapterListViewRentProperties(
             vh.elevator?.text = property.Elevator
             vh.parking?.text = property.Parking.toString()
             vh.wcs?.text = property.WCs.toString()
+            vh.totalArea?.text = "Indefinido"
+
+        }else if (property is Room) {
+            //  Lógica para Room
+            if (rentRegex.containsMatchIn(property.ListingType)) {
+                vh.imagem?.setBackgroundColor(Color.YELLOW) // Cor diferente para quartos para alugar
+            } else {
+                vh.imagem?.setBackgroundColor(Color.GREEN) // Cor padrão para quartos
+            }
+
+            vh.title?.text = property.Title
+            vh.price?.text = property.Price.toString()
+            vh.descricao?.text = property.Description
+            vh.elevator?.text = property.Elevator
+            vh.parking?.text = "Indefinido"
+            vh.wcs?.text = property.Private_wc.toString()
+            vh.totalArea?.text = "Indefinido"
         }
 
         return view
