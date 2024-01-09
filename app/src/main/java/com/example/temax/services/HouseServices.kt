@@ -13,9 +13,18 @@ interface HouseServices {
     @GET("/house")
     fun getAllHouses(): Call<List<House>>
 
+
+    //PROTOCOL: Get
+    // ROTA: /house/changePrioraty/{userID}
+    // DESC: Muda a prioridade de todas as casas do user.
+    @GET("/house/changePrioraty/{userID}")
+    fun updateHousePrioratyLevel(@Path("userID") userID: Int): Call<List<House>>
+
+    //PROTOCOL: Get
+    // ROTA: /house/{userID}
+    // DESC: Retorna todas as casas do user
     @GET("/house/{userID}")
     fun getUserHouses(@Path("userID") userID: Int): Call<List<House>>
-
 
     //PROTOCOL: Get
     // ROTA: /house/rentHouses

@@ -223,25 +223,34 @@ class ServiceTop : AppCompatActivity() {
 
         val price = if (isSwitchPriceChecked) 15.0 else 0.0
 
-        val currentTime = getCurrentDateTime()
+        if (isSwitchPriceChecked || price > 0) {
+            val currentTime = getCurrentDateTime()
 
-        val createPaymentRequest = CreatePayment(
-            UserID = userID.toInt(),
-            Price = price,
-            Status = "Pago",
-            Type_Payment = selectedTypePayment,
-            Date = currentTime,
-        )
+            val createPaymentRequest = CreatePayment(
+                UserID = userID.toInt(),
+                Price = price,
+                Status = "Pago",
+                Type_Payment = selectedTypePayment,
+                Date = currentTime,
+            )
 
-        //Chama a função para criar o pagamento com os dados fornecidos
-        requestCriarPayment(createPaymentRequest)
+            // Chama a função para criar o pagamento com os dados fornecidos
+            requestCriarPayment(createPaymentRequest)
 
-        //Mostra o Toast a informar que o pagamento foi bem sucedido
-        showToast(context, "Pagamento criado com sucesso")
-        finish()
+            // Chama a função para atualizar o Prioraty_level das casas
+            requestUpdatePrioratyLevelHouses(context)
 
+            // Chama a função para atualizar o Prioraty_level dos apartamentos
+            requestUpdatePrioratyLevelApartements(context)
 
+            // Chama a função para atualizar o Prioraty_level dos quartos
+            requestUpdatePrioratyLevelRooms(context)
 
+            showToast(context, "Pagamento criado com sucesso")
+            finish()
+        } else {
+            showToast(context, "Confirme o pagamento de 15 € ")
+        }
     }
 }
 
@@ -274,6 +283,102 @@ private fun requestCriarPayment(createPaymentRequest: CreatePayment){
         }
     })
 }
+
+private fun requestUpdatePrioratyLevelHouses(context: Context) {
+
+    // Obtem o userID do SharedPreferences
+    val userID = context.getSharedPreferences("Temax", Context.MODE_PRIVATE)
+        .getString("userId", null)?.toIntOrNull() ?: -1 // -1 é um valor padrão
+
+    val BASE_URL = "http://${BuildConfig.API_IP}:3000/house/changePrioraty/$userID/"
+
+    val retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    val service = retrofit.create(HouseServices::class.java)
+
+    // Cria o request para a atualização do Prioraty_level
+    val call = service.updateHousePrioratyLevel(userID)
+
+    call.enqueue(object : Callback<List<House>> {
+
+        override fun onResponse(call: Call<List<House>>, response: Response<List<House>>) {
+            if (response.code() == 200) {
+                Log.d("updatePrioratyLevel", "Prioraty_level das casas atualizado com sucesso")
+            }
+        }
+
+        override fun onFailure(call: Call<List<House>>, t: Throwable) {
+            print("error das casas")
+        }
+    })
+}
+
+private fun requestUpdatePrioratyLevelApartements(context: Context) {
+
+    // Obtem o userID do SharedPreferences
+    val userID = context.getSharedPreferences("Temax", Context.MODE_PRIVATE)
+        .getString("userId", null)?.toIntOrNull() ?: -1 // -1 é um valor padrão
+
+    val BASE_URL = "http://${BuildConfig.API_IP}:3000/apartement/changePrioraty/$userID/"
+
+    val retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    val service = retrofit.create(ApartementServices::class.java)
+
+    // Cria o request para a atualização do Prioraty_level
+    val call = service.updateApartementPrioratyLevel(userID)
+
+    call.enqueue(object : Callback<List<Apartement>> {
+
+        override fun onResponse(call: Call<List<Apartement>>, response: Response<List<Apartement>>) {
+            if (response.code() ==200) {
+                Log.d("updatePrioratyLevel", "Prioraty_level dos apartamentos atualizado com sucesso")
+            }
+        }
+
+        override fun onFailure(call: Call<List<Apartement>>, t: Throwable) {
+            print("error dos apartamentos")
+        }
+    })
+
+}
+
+private fun requestUpdatePrioratyLevelRooms(context: Context){
+
+    // Obtem o userID do SharedPreferences
+    val userID = context.getSharedPreferences("Temax", Context.MODE_PRIVATE)
+        .getString("userId", null)?.toIntOrNull() ?: -1 // -1 é um valor padrão
+
+    val BASE_URL = "http://${BuildConfig.API_IP}:3000/room/changePrioraty/$userID/"
+
+    val retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    val service = retrofit.create(RoomServices::class.java)
+
+    // Cria o request para a atualização do Prioraty_level
+    val call = service.updateRoomPrioratyLevel(userID)
+
+    call.enqueue(object : Callback<List<Room>>{
+        override fun onResponse(call: Call<List<Room>>, response: Response<List<Room>>) {
+            if (response.code() == 200) {
+                Log.d("updatePrioratyLevel", "Prioraty Level dos quartos atualizado com sucesso")
+            }
+        }
+        override fun onFailure(call: Call<List<Room>>, t: Throwable) {
+            print("error dos quartos")
+        }
+    })
+}
+
 
 private fun getCurrentDateTime(): String {
     val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())

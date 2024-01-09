@@ -16,6 +16,11 @@ interface ApartementServices {
     @GET("/apartement")
     fun getAllApartements(): Call<List<Apartement>>
 
+    //PROTOCOL: Get
+    // ROTA: /apartement/changePrioraty/{userID}
+    // DESC: Muda a prioridade de todos os apartamentos do user.
+    @GET("/apartement/changePrioraty/{userID}")
+    fun updateApartementPrioratyLevel(@Path("userID") userID: Int): Call<List<Apartement>>
 
     //PROTOCOL: Get
     // ROTA: /apartement/{userID}
