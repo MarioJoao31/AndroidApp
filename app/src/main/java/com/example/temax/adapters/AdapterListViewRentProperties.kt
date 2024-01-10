@@ -11,6 +11,7 @@ import android.widget.TextView
 import com.example.temax.R
 import com.example.temax.classes.Apartement
 import com.example.temax.classes.House
+import com.example.temax.classes.HouseEntity
 import com.example.temax.classes.Room
 
 class AdapterListViewRentProperties(
@@ -88,7 +89,36 @@ class AdapterListViewRentProperties(
             vh.parking?.text = "Indefinido"
             vh.wcs?.text = property.Private_wc.toString()
             vh.totalArea?.text = "Indefinido"
-        }
+        }else if (property is HouseEntity){
+            //  Logica  para House
+            if (rentRegex.containsMatchIn(property.listingType)) {
+                vh.imagem?.setBackgroundColor(Color.RED) // Cor diferente para casas para alugar
+            } else {
+                vh.imagem?.setBackgroundColor(Color.GREEN) // Cor padrão para casas
+            }
+            vh.title?.text = property.title
+            vh.price?.text = property.price.toString()
+            vh.descricao?.text = property.description
+            vh.elevator?.text = property.elevator
+            vh.parking?.text = property.parking.toString()
+            vh.wcs?.text = property.wcs.toString()
+            vh.totalArea?.text = property.totalLotArea.toString()
+        }/*else if (property is ApartementEntity){
+            //  Logica  para Apartement
+            if (rentRegex.containsMatchIn(property.listingType)) {
+                vh.imagem?.setBackgroundColor(Color.BLUE) // Cor diferente para apartamentos para alugar
+            } else {
+                vh.imagem?.setBackgroundColor(Color.GREEN) // Cor padrão para apartamentos
+            }
+
+            vh.title?.text = property.title
+            vh.price?.text = property.price.toString()
+            vh.descricao?.text = property.description
+            vh.elevator?.text = property.elevator
+            vh.parking?.text = property.parking.toString()
+            vh.wcs?.text = property.wcs.toString()
+            vh.totalArea?.text = "Indefinido"
+        }*/
 
         return view
     }
