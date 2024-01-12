@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
 import com.example.temax.services.CommentService
+import com.example.temax.services.UserService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,6 +24,10 @@ import java.util.Locale
 
 class CommentsScreen : AppCompatActivity() {
     private lateinit var commentService: CommentService
+    private lateinit var userService: UserService // Declare uma variável para o UserService
+
+// Dentro do método onCreate() ou em outro lugar apropriado, configure o UserService
+
     private lateinit var listView: ListView
     private var houseID: Int = 0 // Variável de classe para armazenar houseID
     private var apartementID: Int = 0 // Variável de classe para armazenar apartID
@@ -48,17 +53,21 @@ class CommentsScreen : AppCompatActivity() {
 
         houseID = intent.getIntExtra("houseID", 0)
         apartementID = intent.getIntExtra("apartementID", 0)
+        roomID = intent.getIntExtra("roomID", 0)
 
         listView = findViewById<ListView>(R.id.listview_comments)
+
         val commentBaseUrl = "http://${BuildConfig.API_IP}:3000/house/rentHouses/"
 
-        // Configuração do Retrofit para o commentService
-        val commentRetrofit: Retrofit = Retrofit.Builder()
+        // Configuração do Retrofit para o commentService e userService (pode reutilizar a instância do Retrofit)
+        val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(commentBaseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        commentService = commentRetrofit.create(CommentService::class.java)
+        commentService = retrofit.create(CommentService::class.java)
+        userService = retrofit.create(UserService::class.java)
+
 
         Log.d("CommentsScreen", "houseID: ${houseID}")
 
@@ -72,10 +81,12 @@ class CommentsScreen : AppCompatActivity() {
                     val commentList = response.body()
 
                     if (commentList != null) {
+                        Log.d("CommentsScreen", "Lista de comentários por HouseID: $commentList")
                         val adapter = CommentAdapter(
                             this@CommentsScreen,
                             R.layout.item_comment,
-                            commentList
+                            commentList,
+                            userService
                         )
                         listView.adapter = adapter
                     }
@@ -117,7 +128,50 @@ class CommentsScreen : AppCompatActivity() {
                         val adapter = CommentAdapter(
                             this@CommentsScreen,
                             R.layout.item_comment,
-                            commentList
+                            commentList,
+                            userService
+                        )
+                        listView.adapter = adapter
+                    }
+                } else {
+                    // Tratamento para falha ao obter comentários por ApartmentID
+                    Toast.makeText(
+                        this@CommentsScreen,
+                        "Estamos com problema ao carregar os comentários do apartamento",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Comment>>, t: Throwable) {
+                // Log de erro ou tratamento de falha na requisição para ApartmentID
+                Log.e("CommentsScreen", "Erro ao carregar comentários do apartamento", t)
+
+                // Tratamento para falha ao obter comentários por ApartmentID
+                Toast.makeText(
+                    this@CommentsScreen,
+                    "Falha ao carregar comentários do apartamento",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+        })
+
+        var RoomID = roomID
+        // Callback para a resposta do serviço getCommentsByApartmentID()
+        val callRoomComments = commentService.getCommentsByRoomID(RoomID)
+
+        callRoomComments.enqueue(object : Callback<List<Comment>> {
+            override fun onResponse(call: Call<List<Comment>>, response: Response<List<Comment>>) {
+                if (response.isSuccessful) {
+                    val commentList = response.body()
+
+                    if (commentList != null) {
+                        val adapter = CommentAdapter(
+                            this@CommentsScreen,
+                            R.layout.item_comment,
+                            commentList,
+                            userService
                         )
                         listView.adapter = adapter
                     }
@@ -225,6 +279,7 @@ class CommentsScreen : AppCompatActivity() {
                 // Atualizar a lista de comentários para HouseID e ApartmentID (chamadas da API)
                 atualizarListaComentariosHouseID()
                 atualizarListaComentariosApartmentID()
+                atualizarListaComentariosRoomID()
             }
         })
     }
@@ -248,7 +303,8 @@ class CommentsScreen : AppCompatActivity() {
                         val adapter = CommentAdapter(
                             this@CommentsScreen,
                             R.layout.item_comment,
-                            commentList
+                            commentList,
+                            userService
                         )
                         listView.adapter = adapter
                     }
@@ -286,7 +342,8 @@ class CommentsScreen : AppCompatActivity() {
                         val adapter = CommentAdapter(
                             this@CommentsScreen,
                             R.layout.item_comment,
-                            commentList
+                            commentList,
+                            userService
                         )
                         listView.adapter = adapter
                     }
@@ -307,6 +364,67 @@ class CommentsScreen : AppCompatActivity() {
                     "Falha ao carregar comentários do apartamento",
                     Toast.LENGTH_SHORT
                 ).show()
+            }
+        })
+    }
+
+    private fun atualizarListaComentariosRoomID() {
+        val callRoomComments = commentService.getCommentsByRoomID(roomID)
+
+        callRoomComments.enqueue(object : Callback<List<Comment>> {
+            override fun onResponse(call: Call<List<Comment>>, response: Response<List<Comment>>) {
+                if (response.isSuccessful) {
+                    val commentList = response.body()
+
+                    if (commentList != null) {
+                        val adapter = CommentAdapter(
+                            this@CommentsScreen,
+                            R.layout.item_comment,
+                            commentList,
+                            userService
+                        )
+                        listView.adapter = adapter
+                    }
+                } else {
+                    // Tratamento para falha ao obter comentários por RoomID
+                    Toast.makeText(
+                        this@CommentsScreen,
+                        "Estamos com problema ao carregar os comentários do quarto",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Comment>>, t: Throwable) {
+                // Log de erro ou tratamento de falha na requisição para RoomID
+                Log.e("CommentsScreen", "Erro ao carregar comentários do quarto", t)
+
+                // Tratamento para falha ao obter comentários por RoomID
+                Toast.makeText(
+                    this@CommentsScreen,
+                    "Falha ao carregar comentários do quarto",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+    }
+
+    // Função para obter o nome do usuário usando o serviço Retrofit
+    private fun getUserName(userID: Int, userService: UserService) {
+        userService.getUserName(userID).enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                if (response.isSuccessful) {
+                    val userName = response.body()
+                    Log.d("CommentAdapter", "Nome do Usuário recebido: $userName")
+                } else if (response.code() == 404) {
+                    Log.e("CommentAdapter", "Nome do usuário não encontrado (404)")
+                } else {
+                    Log.e("CommentAdapter", "Erro ao obter o nome do usuário: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.e("CommentAdapter", "Falha ao obter o nome do usuário", t)
             }
         })
     }

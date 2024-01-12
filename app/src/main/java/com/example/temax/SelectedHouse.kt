@@ -16,7 +16,7 @@ class SelectedHouse : AppCompatActivity() {
 
     private var houseID: Int ?= 0 // Variável de classe para armazenar houseID
     private var apartementID: Int ?= 0
-    private var userID: Int ?= 0
+    private var roomID: Int ?= 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_selected_house)
@@ -58,7 +58,6 @@ class SelectedHouse : AppCompatActivity() {
                 tittle = selectedItem.Title
                 address = selectedItem.Address
                 houseID = selectedItem.HouseID
-                userID = selectedItem.UserID
             }
             if (selectedItem is Apartement) {
                 price = selectedItem.Price
@@ -73,7 +72,6 @@ class SelectedHouse : AppCompatActivity() {
                 address = selectedItem.Address
                 floor = selectedItem.Floor
                 apartementID = selectedItem.ApartementID
-                userID = selectedItem.UserID
 
             }
             if (selectedItem is Room) {
@@ -89,7 +87,7 @@ class SelectedHouse : AppCompatActivity() {
                 private_wc = selectedItem.Private_wc
                 num_beds = selectedItem.Num_beds
                 shared_room = selectedItem.Shared_room
-                userID = selectedItem.UserID
+                roomID = selectedItem.RoomID
             }
         }
         // Encontre os TextViews na sua UI
@@ -212,7 +210,7 @@ class SelectedHouse : AppCompatActivity() {
         val intent = Intent(this@SelectedHouse, CommentsScreen::class.java)
         intent.putExtra("houseID", houseID)
         intent.putExtra("apartementID", apartementID)
-        intent.putExtra("userID", userID)
+        intent.putExtra("roomID", roomID)
         startActivity(intent)
     }
 

@@ -19,6 +19,8 @@ interface CommentService {
     @GET("/comments/apartment/{ApartmentID}")
     fun getCommentsByApartmentID(@Path("ApartmentID") ApartmentID: Int): Call<List<Comment>>
 
+    @GET("/comments/room/{RoomID}")
+    fun getCommentsByRoomID(@Path("RoomID") RoomID: Int): Call<List<Comment>>
 
     // Endpoint para enviar um novo comentário
     @POST("/comments/createComment") // Verifique e ajuste o endpoint conforme necessário

@@ -11,3 +11,4 @@ data class Comment(
     @SerializedName("HouseID") val houseID: Int,
     @SerializedName("ApartmentID") val apartmentID: Int
 ) : Serializable
+
