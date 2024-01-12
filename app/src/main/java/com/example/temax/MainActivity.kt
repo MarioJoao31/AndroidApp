@@ -4,12 +4,14 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.example.temax.manager.SocketManager
+import io.socket.client.Socket
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -18,15 +20,20 @@ import okhttp3.Response
 import org.json.JSONObject
 import java.io.IOException
 
+
 class MainActivity : AppCompatActivity() {
     val emailEditText: EditText by lazy { findViewById(R.id.main_editText) }
     val passwordEditText: EditText by lazy { findViewById(R.id.main_editText2)}
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
         //verifica se esta logado já
         isLoggedIn()
     }
+
 
     private fun isLoggedIn() {
         val sp = getSharedPreferences(this@MainActivity)

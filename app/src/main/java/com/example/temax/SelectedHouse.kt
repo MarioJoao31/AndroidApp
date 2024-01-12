@@ -202,4 +202,10 @@ class SelectedHouse : AppCompatActivity() {
         val intent = Intent(this@SelectedHouse, CommentsScreen::class.java)
         startActivityForResult(intent,1)
     }
+
+
+    fun GoToChat (view: View){
+        val intent = Intent(this@SelectedHouse, ChatChannels::class.java)
+        startActivityForResult(intent,1)
+    }
 }

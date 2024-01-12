@@ -26,9 +26,8 @@ class SelectTypeUser : AppCompatActivity() {
         startActivityForResult(intent,1)
     }
 
-    //TODO: ligar aqui para a lista de chats
-    fun SelectChats(view: View){
-        //val intent = Intent(this@SelectTypeUser, DashboardUser::class.java)
-        //startActivityForResult(intent,1)
+    fun GoToChannels(view: View) {
+        val intent = Intent(this@SelectTypeUser, ChatChannels::class.java)
+        startActivityForResult(intent,1)
     }
 }

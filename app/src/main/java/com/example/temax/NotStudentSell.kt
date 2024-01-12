@@ -318,8 +318,6 @@ class NotStudentSell : AppCompatActivity() {
                 if(response.code() == 200){
                     val retroFit2 = response.body()
                     Log.d("resposta",retroFit2.toString())
-
-
                 }
             }
 
@@ -327,8 +325,6 @@ class NotStudentSell : AppCompatActivity() {
                 print("error")
             }
         })
-
-
     }
 
     private fun requestCriarApartamento(createApartementRequest: CreateApartement){

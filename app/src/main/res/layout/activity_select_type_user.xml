@@ -15,7 +15,7 @@
         android:layout_marginTop="10dp"
         android:text="Chats"
         android:textSize="10dp"
-        android:onClick="SelectBtTypeStudent"
+        android:onClick="GoToChannels"
         />
 
     <Button
