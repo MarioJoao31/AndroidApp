@@ -2,10 +2,12 @@ package com.example.temax.services
 
 import com.example.temax.classes.Room
 import com.example.temax.classes.CreateRoom
+import com.example.temax.classes.House
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface RoomServices {
 
@@ -14,6 +16,19 @@ interface RoomServices {
     // DESC: Retorna todos os quartos disponíveis
     @GET("/room")
     fun getAllRooms(): Call<List<Room>>
+
+
+    //PROTOCOL: Get
+    // ROTA: /room/changePrioraty/{userID}
+    // DESC: Muda a prioridade de todos os quartos do user.
+    @GET("/room/changePrioraty/{userID}")
+    fun updateRoomPrioratyLevel (@Path("userID") userID: Int): Call<List<Room>>
+
+    //PROTOCOL: Get
+    // ROTA: /room/{userID}
+    // DESC: Retorna todos os quartos do user
+    @GET("/room/{userID}")
+    fun getUserRooms(@Path("userID") userID: Int): Call<List<Room>>
 
     //PROTOCOL: Get
     // ROTA: /room/rentRooms

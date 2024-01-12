@@ -12,5 +12,6 @@
     <string name="Contact_error_message">Invalid Contact</string>
     <string name="Name_error_message">Name Can`t be Null</string>
     <string name="email_error_message">Invalid Email</string>
+    <string name="ser_cobrado_um_valor_de_15" translatable="false">Será cobrado um valor de 15 €</string>
 
 </resources>

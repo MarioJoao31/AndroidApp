@@ -8,9 +8,16 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.temax.adapters.AdapterListViewRentProperties
 import com.example.temax.classes.Apartement
 import com.example.temax.classes.House
+import com.example.temax.classes.HouseEntity
+import com.example.temax.classes.MyDatabase
 import com.example.temax.classes.Room
 import com.example.temax.services.ApartementServices
 import com.example.temax.services.HouseServices
+import com.example.temax.services.RoomServices
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,6 +29,11 @@ class StudentRentList : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_student_rent_list)
+
+        val db = androidx.room.Room.databaseBuilder(
+            applicationContext,
+            MyDatabase::class.java, "temax.db"
+        ).build()
 
         // Encontra a ListView no layout da activity
         val listView = findViewById<ListView>(R.id.listview_student_rent_announces)
@@ -48,11 +60,26 @@ class StudentRentList : AppCompatActivity() {
 
         val apartementService = apartementRetrofit.create(ApartementServices::class.java)
 
+        // URL para a função de quartos para arrendar
+        val roomBaseUrl = "http://${BuildConfig.API_IP}:3000/room/rentRooms/"
+
+        // Configuração do Retrofit para o roomService
+        val roomRetrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(roomBaseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val roomService = roomRetrofit.create(RoomServices::class.java)
+
         // Chamada do serviço getRentHouses proveniente do HouseServices
         val callHouses = houseService.getRentHouses()
 
         // Chamada do serviço getRentApartements proveniente do ApartementServices
         val callApartements = apartementService.getRentApartements()
+
+        // Chamada do serviço getRentRooms proveniente do RoomServices
+        val callRooms = roomService.getRentRooms()
+
 
         // Callback para a resposta do serviço getRentHouses()
         callHouses.enqueue(object : Callback<List<House>> {
@@ -60,7 +87,43 @@ class StudentRentList : AppCompatActivity() {
                 if (response.code() == 200) {
                     val houseList = response.body()
 
-                    // Callback para a resposta do serviço getRentApartements
+                    // Verifique se a lista não está vazia antes de inserir na base de dados "MyDatabase"
+                    houseList?.let {
+                        // Converte a lista de House para HouseEntity
+                        val houseEntityList = it.map { house ->
+                            HouseEntity(
+                                houseID = house.HouseID,
+                                userID = house.UserID,
+                                price = house.Price,
+                                constructionYear = house.Construction_year,
+                                parking = house.Parking,
+                                elevator = house.Elevator,
+                                priorityLevel = house.Prioraty_level,
+                                description = house.Description,
+                                postalCode = house.Postal_code,
+                                privateGrossArea = house.Private_gross_area,
+                                totalLotArea = house.Total_lot_area,
+                                bedrooms = house.Bedrooms,
+                                wcs = house.WCs,
+                                listingType = house.ListingType,
+                                title = house.Title,
+                                address = house.Address
+
+                            )
+                        }
+                        // Inserir todas as casas na base de dados local "MyDatabase"
+                        GlobalScope.launch(Dispatchers.IO) {
+
+                            db.houseDao().deleteAllHouses()
+                            Log.d("Sqlite" ,"Dados Antigos casas Removidos")
+
+                            db.houseDao().insertAllHouses(houseEntityList)
+                            Log.d("Sqlite" ,"Dados casas inseridos")
+                        }
+                    }
+
+
+                    // Chamada do serviço getRentApartements
                     callApartements.enqueue(object : Callback<List<Apartement>> {
                         override fun onResponse(
                             call: Call<List<Apartement>>,
@@ -69,37 +132,106 @@ class StudentRentList : AppCompatActivity() {
                             if (response.code() == 200) {
                                 val apartementList = response.body()
 
-                                // Combina as listas de casas e apartamentos
-                                val combinedList = mutableListOf<Any>()
-                                combinedList.addAll(houseList.orEmpty())
-                                combinedList.addAll(apartementList.orEmpty())
+                                // Verifica se a lista não está vazia antes de inserir na base de dados
+                                /*apartementList?.let {
 
-                                // Configuração do AdapterListViewRentProperties com a lista combinada
-                                val adapter =
-                                    AdapterListViewRentProperties(
-                                        this@StudentRentList,
-                                        R.layout.activity_student_rent_list,
-                                        combinedList
-                                    )
-                                listView.adapter = adapter
+                                    // Converte a lista de apartement para ApartementEntity
 
-                                listView.setOnItemClickListener { _, _, position, _ ->
-                                    val selectedItem = combinedList[position]
-                                    val intent = Intent(this@StudentRentList, SelectedHouse::class.java)
-
-
-                                    if (selectedItem is House || selectedItem is Apartement || selectedItem is Room) {
-                                        intent.putExtra("selectedItem", selectedItem as Serializable)
-                                        startActivity(intent)
+                                    val apartementEntityList = it.map { apartement ->
+                                        ApartementEntity (
+                                            apartementID = apartement.ApartementID,
+                                            userID = apartement.UserID,
+                                            price = apartement.Price,
+                                            constructionYear = apartement.Construction_year,
+                                            parking = apartement.Parking,
+                                            elevator = apartement.Elevator,
+                                            prioratyLevel = apartement.Prioraty_level,
+                                            description = apartement.Description,
+                                            postalCode = apartement.Postal_code,
+                                            floor = apartement.Floor,
+                                            bedrooms = apartement.Bedrooms,
+                                            wcs = apartement.WCs,
+                                            listingType = apartement.ListingType,
+                                            title = apartement.Title,
+                                            address = apartement.Address
+                                        )
                                     }
-                                }
+
+                                    // Inserir todos os apartamentos na base de dados local "MyDatabase"
+                                    GlobalScope.launch(Dispatchers.IO) {
+
+                                        //db.apartementDao().deleteAllApartements()
+                                        Log.d("Sqlite" ,"Dados Antigos apartamentos Removidos")
+
+                                        //db.apartementDao().insertAllApartements(apartementEntityList)
+                                        Log.d("Sqlite" ,"Dados apartamentos inseridos")
+                                    }
+                                }*/
+
+                                // Chamada do serviço getRentRooms
+                                callRooms.enqueue(object : Callback<List<Room>> {
+                                    override fun onResponse(
+                                        call: Call<List<Room>>,
+                                        response: Response<List<Room>>
+                                    ) {
+                                        if (response.code() == 200) {
+                                            val roomList = response.body()
+
+                                            // Combina as listas de casas, apartamentos e quartos
+                                            val combinedList = mutableListOf<Any>()
+                                            combinedList.addAll(houseList.orEmpty())
+                                            combinedList.addAll(apartementList.orEmpty())
+                                            combinedList.addAll(roomList.orEmpty())
+
+                                            // Ordene a lista combinada com base no nível de prioridade
+                                            combinedList.sortBy {
+                                                when (it) {
+
+                                                    is House -> it.Prioraty_level
+                                                    is Apartement -> it.Prioraty_level
+                                                    is Room -> it.Prioraty_level
+
+                                                    else -> 3 // Defina um valor padrão para outros tipos
+                                                }
+                                            }
+
+                                            // Configuração do AdapterListViewRentProperties com a lista combinada
+                                            val adapter =
+                                                AdapterListViewRentProperties(
+                                                    this@StudentRentList,
+                                                    R.layout.activity_student_rent_list,
+                                                    combinedList
+                                                )
+                                            listView.adapter = adapter
+
+                                            listView.setOnItemClickListener { _, _, position, _ ->
+                                                val selectedItem = combinedList[position]
+                                                val intent =
+                                                    Intent(
+                                                        this@StudentRentList,
+                                                        SelectedHouse::class.java
+                                                    )
+
+                                                if (selectedItem is House || selectedItem is Apartement || selectedItem is Room) {
+                                                    intent.putExtra(
+                                                        "selectedItem",
+                                                        selectedItem as Serializable
+                                                    )
+                                                    startActivity(intent)
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    override fun onFailure(call: Call<List<Room>>, t: Throwable) {
+                                        // Log de erro caso a chamada do RoomService falhe
+                                        Log.e("StudentRentList", "Error fetching Rooms", t)
+                                    }
+                                })
                             }
                         }
 
-                        override fun onFailure(
-                            call: Call<List<Apartement>>,
-                            t: Throwable
-                        ) {
+                        override fun onFailure(call: Call<List<Apartement>>, t: Throwable) {
                             // Log de erro caso a chamada do ApartementService falhe
                             Log.e("StudentRentList", "Error fetching Apartements", t)
                         }
@@ -109,8 +241,38 @@ class StudentRentList : AppCompatActivity() {
 
             override fun onFailure(call: Call<List<House>>, t: Throwable) {
 
-                // Log de erro caso a chamada do ApartementService falhe
-                Log.e("StudentRentList", "Error fetching Houses", t)
+                // Log de erro caso a chamada do HouseService falhe logo tenho de meter o sql lite aqui.
+                Log.e("StudentRentList", "Error conect to the API", t)
+
+                // Se a chamada não for bem-sucedida, recupero aqui  os dados da base de dados local "MyDatabase"
+                GlobalScope.launch(Dispatchers.IO) {
+
+                    val localHouseList = db.houseDao().getHousesForRent()
+                    //val localApartementList = db.apartementDao().getApartements()
+
+                    // Combina  as listas das casas e apartamentos da base de dados local "MyDatabase"
+                    val combinedList = mutableListOf<Any>()
+                    combinedList.addAll(localHouseList)
+                    //combinedList.addAll(localApartementList)
+
+                    // Ordene a lista combinada com base no nível de prioridade
+                    combinedList.sortBy {
+                        when (it) {
+
+                            is HouseEntity -> it.priorityLevel
+
+
+                            else -> 3 // Defina um valor padrão para outros tipos
+                        }
+                    }
+
+                    Log.d("Sqlite", "Dados armazenados das casas no sqlLite com sucesso.")
+
+                    withContext(Dispatchers.Main) {
+                        // Exibe os dados na ListView
+                        displayDataInListView(combinedList)
+                    }
+                }
             }
         })
 
@@ -120,5 +282,30 @@ class StudentRentList : AppCompatActivity() {
             val intent = Intent(this@StudentRentList, SelectedHouse::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun displayDataInListView(dataList: List<Any>) {
+
+        // Encontra a ListView no layout da activity
+        val listView = findViewById<ListView>(R.id.listview_student_rent_announces)
+
+        // Configuração do AdapterListViewRentProperties com a lista do banco de dados local
+        val adapter = AdapterListViewRentProperties(
+            this@StudentRentList,
+            R.layout.activity_student_rent_list,
+            dataList
+        )
+        listView.adapter = adapter
+
+        /* Caso precise vir aqui.
+        listView.setOnItemClickListener { _, _, position, _ ->
+            val selectedItem = dataList[position]
+            val intent = Intent(this@StudentRentList, SelectedHouse::class.java)
+
+            if (selectedItem is HouseEntity) {
+                intent.putExtra("selectedItem", selectedItem as Serializable)
+                startActivity(intent)
+            }
+        } */
     }
 }

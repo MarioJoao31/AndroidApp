@@ -41,4 +41,9 @@ class DashboardUser : AppCompatActivity() {
         val intent = Intent(this, ServiceTop::class.java)
         startActivity(intent)
     }
+
+    fun seePaymentsOnClick(view: View){
+        val intent = Intent(this, ListPayments::class.java)
+        startActivity(intent)
+    }
 }

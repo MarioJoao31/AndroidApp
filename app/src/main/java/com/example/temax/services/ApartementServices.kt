@@ -6,14 +6,27 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApartementServices {
 
     //PROTOCOL: Get
-    // ROTA: /apartements
+    // ROTA: /apartement
     // DESC: Retorna todos os apartamentos disponíveis
     @GET("/apartement")
     fun getAllApartements(): Call<List<Apartement>>
+
+    //PROTOCOL: Get
+    // ROTA: /apartement/changePrioraty/{userID}
+    // DESC: Muda a prioridade de todos os apartamentos do user.
+    @GET("/apartement/changePrioraty/{userID}")
+    fun updateApartementPrioratyLevel(@Path("userID") userID: Int): Call<List<Apartement>>
+
+    //PROTOCOL: Get
+    // ROTA: /apartement/{userID}
+    // DESC: Retorna todos os apartamentos do user
+    @GET("/apartement/{userID}")
+    fun getUserApartments(@Path("userID") userID: Int): Call<List<Apartement>>
 
     //PROTOCOL: Get
     // ROTA: /apartement/rentApartements
