@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Temax"
         tools:targetApi="31">
         <activity
+            android:name=".EditUserProfile"
+            android:exported="false" />
+        <activity
             android:name=".ListPayments"
             android:exported="false" />
         <activity

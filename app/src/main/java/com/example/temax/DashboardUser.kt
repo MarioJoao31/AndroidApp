@@ -46,4 +46,11 @@ class DashboardUser : AppCompatActivity() {
         val intent = Intent(this, ListPayments::class.java)
         startActivity(intent)
     }
+
+    fun GoToEditProfile(view: View){
+        val intent = Intent(this, EditUserProfile::class.java)
+        startActivity(intent)
+    }
+
+
 }
