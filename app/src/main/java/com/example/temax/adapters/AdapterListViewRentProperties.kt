@@ -43,6 +43,7 @@ class AdapterListViewRentProperties(
 
         val rentRegex = Regex("rent", RegexOption.IGNORE_CASE)
 
+
         if (property is House) {
             //  Logica  para House
             if (rentRegex.containsMatchIn(property.ListingType)) {
@@ -119,6 +120,20 @@ class AdapterListViewRentProperties(
             vh.wcs?.text = property.wcs.toString()
             vh.totalArea?.text = "Indefinido"
         }*/
+
+        // Aqui adicionamos a lógica para Prioraty_level e a visibilidade da TextView txtStar
+        val txtStar = view.findViewById<TextView>(R.id.text_star)
+
+        // Verifique se o Prioraty_level é igual a 1
+        if ((property is House && property.Prioraty_level == 1)
+            || (property is Apartement && property.Prioraty_level == 1)
+            || (property is Room && property.Prioraty_level == 1)) {
+            // Se sim, torne a TextView visível
+            txtStar.visibility = View.VISIBLE
+        } else {
+            // Caso contrário, torne a TextView invisível
+            txtStar.visibility = View.INVISIBLE
+        }
 
         return view
     }

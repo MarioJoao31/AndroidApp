@@ -9,6 +9,7 @@ import android.widget.TextView
 import com.example.temax.R
 import com.example.temax.classes.Apartement
 import com.example.temax.classes.House
+import com.example.temax.classes.Room
 import java.io.Serializable
 
 class AdapterListViewBuyProperties(context: Context,resource: Int, objects: MutableList<Serializable> ) :
@@ -56,6 +57,20 @@ class AdapterListViewBuyProperties(context: Context,resource: Int, objects: Muta
                 vh.wcs?.text = ""
                 vh.totalArea?.text = ""
             }
+        }
+
+        // Aqui adicionamos a lógica para Prioraty_level e a visibilidade da TextView txtStar
+        val txtStar = view.findViewById<TextView>(R.id.text_star)
+
+        // Verifique se o Prioraty_level é igual a 1
+        if ((propertie is House && propertie.Prioraty_level == 1)
+            || (propertie is Apartement && propertie.Prioraty_level == 1)
+            || (propertie is Room && propertie.Prioraty_level == 1)) {
+            // Se sim, torne a TextView visível
+            txtStar.visibility = View.VISIBLE
+        } else {
+            // Caso contrário, torne a TextView invisível
+            txtStar.visibility = View.INVISIBLE
         }
 
         return view
