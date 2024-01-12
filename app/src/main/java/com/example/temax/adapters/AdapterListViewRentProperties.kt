@@ -127,7 +127,8 @@ class AdapterListViewRentProperties(
         // Verifique se o Prioraty_level é igual a 1
         if ((property is House && property.Prioraty_level == 1)
             || (property is Apartement && property.Prioraty_level == 1)
-            || (property is Room && property.Prioraty_level == 1)) {
+            || (property is Room && property.Prioraty_level == 1)
+            || (property is HouseEntity && property.priorityLevel == 1)) {
             // Se sim, torne a TextView visível
             txtStar.visibility = View.VISIBLE
         } else {
