@@ -10,9 +10,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.temax.R
 import com.example.temax.classes.Apartement
+import com.example.temax.classes.ApartementEntity
 import com.example.temax.classes.House
 import com.example.temax.classes.HouseEntity
 import com.example.temax.classes.Room
+import com.example.temax.classes.RoomEntity
 
 class AdapterListViewRentProperties(
     context: Context,
@@ -104,22 +106,37 @@ class AdapterListViewRentProperties(
             vh.parking?.text = property.parking.toString()
             vh.wcs?.text = property.wcs.toString()
             vh.totalArea?.text = property.totalLotArea.toString()
-        }/*else if (property is ApartementEntity){
+        }else if (property is ApartementEntity){
             //  Logica  para Apartement
-            if (rentRegex.containsMatchIn(property.listingType)) {
+            if (rentRegex.containsMatchIn(property.ListingType)) {
                 vh.imagem?.setBackgroundColor(Color.BLUE) // Cor diferente para apartamentos para alugar
             } else {
                 vh.imagem?.setBackgroundColor(Color.GREEN) // Cor padrão para apartamentos
             }
 
-            vh.title?.text = property.title
-            vh.price?.text = property.price.toString()
-            vh.descricao?.text = property.description
-            vh.elevator?.text = property.elevator
-            vh.parking?.text = property.parking.toString()
-            vh.wcs?.text = property.wcs.toString()
+            vh.title?.text = property.Title
+            vh.price?.text = property.Price.toString()
+            vh.descricao?.text = property.Description
+            vh.elevator?.text = property.Elevator
+            vh.parking?.text = property.Parking.toString()
+            vh.wcs?.text = property.WCs.toString()
             vh.totalArea?.text = "Indefinido"
-        }*/
+        }else if (property is RoomEntity){
+            //  Lógica para Room
+            if (rentRegex.containsMatchIn(property.ListingType)) {
+                vh.imagem?.setBackgroundColor(Color.YELLOW) // Cor diferente para quartos para alugar
+            } else {
+                vh.imagem?.setBackgroundColor(Color.GREEN) // Cor padrão para quartos
+            }
+
+            vh.title?.text = property.Title
+            vh.price?.text = property.Price.toString()
+            vh.descricao?.text = property.Description
+            vh.elevator?.text = property.Elevator
+            vh.parking?.text = "Indefinido"
+            vh.wcs?.text = property.Private_wc.toString()
+            vh.totalArea?.text = "Indefinido"
+        }
 
         // Aqui adicionamos a lógica para Prioraty_level e a visibilidade da TextView txtStar
         val txtStar = view.findViewById<TextView>(R.id.text_star)
@@ -128,7 +145,9 @@ class AdapterListViewRentProperties(
         if ((property is House && property.Prioraty_level == 1)
             || (property is Apartement && property.Prioraty_level == 1)
             || (property is Room && property.Prioraty_level == 1)
-            || (property is HouseEntity && property.priorityLevel == 1)) {
+            || (property is HouseEntity && property.priorityLevel == 1)
+            || (property is ApartementEntity && property.Prioraty_level == 1)
+            || (property is RoomEntity && property.Prioraty_level == 1)) {
             // Se sim, torne a TextView visível
             txtStar.visibility = View.VISIBLE
         } else {

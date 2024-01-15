@@ -7,10 +7,12 @@ import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.temax.adapters.AdapterListViewRentProperties
 import com.example.temax.classes.Apartement
+import com.example.temax.classes.ApartementEntity
 import com.example.temax.classes.House
 import com.example.temax.classes.HouseEntity
 import com.example.temax.classes.MyDatabase
 import com.example.temax.classes.Room
+import com.example.temax.classes.RoomEntity
 import com.example.temax.services.ApartementServices
 import com.example.temax.services.HouseServices
 import com.example.temax.services.RoomServices
@@ -133,40 +135,40 @@ class StudentRentList : AppCompatActivity() {
                                 val apartementList = response.body()
 
                                 // Verifica se a lista não está vazia antes de inserir na base de dados
-                                /*apartementList?.let {
+                                apartementList?.let {
 
                                     // Converte a lista de apartement para ApartementEntity
 
                                     val apartementEntityList = it.map { apartement ->
                                         ApartementEntity (
-                                            apartementID = apartement.ApartementID,
-                                            userID = apartement.UserID,
-                                            price = apartement.Price,
-                                            constructionYear = apartement.Construction_year,
-                                            parking = apartement.Parking,
-                                            elevator = apartement.Elevator,
-                                            prioratyLevel = apartement.Prioraty_level,
-                                            description = apartement.Description,
-                                            postalCode = apartement.Postal_code,
-                                            floor = apartement.Floor,
-                                            bedrooms = apartement.Bedrooms,
-                                            wcs = apartement.WCs,
-                                            listingType = apartement.ListingType,
-                                            title = apartement.Title,
-                                            address = apartement.Address
+                                            ApartementID = apartement.ApartementID,
+                                            UserID = apartement.UserID,
+                                            Price = apartement.Price,
+                                            Construction_year = apartement.Construction_year,
+                                            Parking = apartement.Parking,
+                                            Elevator = apartement.Elevator,
+                                            Prioraty_level = apartement.Prioraty_level,
+                                            Description = apartement.Description,
+                                            Postal_code = apartement.Postal_code,
+                                            Floor = apartement.Floor,
+                                            Bedrooms = apartement.Bedrooms,
+                                            WCs = apartement.WCs,
+                                            ListingType = apartement.ListingType,
+                                            Title = apartement.Title,
+                                            Address = apartement.Address
                                         )
                                     }
 
                                     // Inserir todos os apartamentos na base de dados local "MyDatabase"
                                     GlobalScope.launch(Dispatchers.IO) {
 
-                                        //db.apartementDao().deleteAllApartements()
+                                        db.apartementDao().deleteAllApartements()
                                         Log.d("Sqlite" ,"Dados Antigos apartamentos Removidos")
 
-                                        //db.apartementDao().insertAllApartements(apartementEntityList)
+                                        db.apartementDao().insertAllApartements(apartementEntityList)
                                         Log.d("Sqlite" ,"Dados apartamentos inseridos")
                                     }
-                                }*/
+                                }
 
                                 // Chamada do serviço getRentRooms
                                 callRooms.enqueue(object : Callback<List<Room>> {
@@ -176,6 +178,43 @@ class StudentRentList : AppCompatActivity() {
                                     ) {
                                         if (response.code() == 200) {
                                             val roomList = response.body()
+
+                                            // Verifica se a lista não está vazia antes de inserir na base de dados
+                                            roomList?.let {
+
+                                                // Converte a lista de apartement para ApartementEntity
+                                                val roomEntityList = it.map { room ->
+                                                    RoomEntity(
+                                                        RoomID = room.RoomID,
+                                                        UserID = room.UserID,
+                                                        Price = room.Price,
+                                                        Construction_year = room.Construction_year,
+                                                        Parking = room.Parking,
+                                                        Elevator = room.Elevator,
+                                                        Prioraty_level = room.Prioraty_level,
+                                                        Description = room.Description,
+                                                        Postal_code = room.Postal_code,
+                                                        Num_beds = room.Num_beds,
+                                                        Private_wc = room.Private_wc,
+                                                        Available_kitchen = room.Available_kitchen,
+                                                        ListingType = room.ListingType,
+                                                        Shared_room = room.Shared_room,
+                                                        Title = room.Title,
+                                                        Address = room.Address
+                                                    )
+                                                }
+
+                                                GlobalScope.launch(Dispatchers.IO) {
+
+                                                    db.roomDao().deleteAllRooms()
+                                                    Log.d("Sqlite" ,"Dados Antigos quartos Removidos")
+
+                                                    db.roomDao().insertAllRooms(roomEntityList)
+                                                    Log.d("Sqlite" ,"Dados quartos inseridos")
+                                                }
+                                            }
+
+
 
                                             // Combina as listas de casas, apartamentos e quartos
                                             val combinedList = mutableListOf<Any>()
@@ -242,31 +281,35 @@ class StudentRentList : AppCompatActivity() {
             override fun onFailure(call: Call<List<House>>, t: Throwable) {
 
                 // Log de erro caso a chamada do HouseService falhe logo tenho de meter o sql lite aqui.
-                Log.e("StudentRentList", "Error conect to the API", t)
+                Log.e("SQLLITE", "Error conect to the API", t)
 
                 // Se a chamada não for bem-sucedida, recupero aqui  os dados da base de dados local "MyDatabase"
                 GlobalScope.launch(Dispatchers.IO) {
 
                     val localHouseList = db.houseDao().getHousesForRent()
-                    //val localApartementList = db.apartementDao().getApartements()
+                    val localApartementList = db.apartementDao().getApartementsForRent()
+                    val localRoomList = db.roomDao().getRooms()
 
                     // Combina  as listas das casas e apartamentos da base de dados local "MyDatabase"
                     val combinedList = mutableListOf<Any>()
                     combinedList.addAll(localHouseList)
-                    //combinedList.addAll(localApartementList)
+                    combinedList.addAll(localApartementList)
+                    combinedList.addAll(localRoomList)
 
                     // Ordene a lista combinada com base no nível de prioridade
                     combinedList.sortBy {
                         when (it) {
 
                             is HouseEntity -> it.priorityLevel
+                            is ApartementEntity -> it.Prioraty_level
+                            is RoomEntity -> it.Prioraty_level
 
 
                             else -> 3 // Defina um valor padrão para outros tipos
                         }
                     }
 
-                    Log.d("Sqlite", "Dados armazenados das casas no sqlLite com sucesso.")
+                    Log.d("Sqlite", "Dados armazenados das casas apartamentos e quartos no sqlLite com sucesso.")
 
                     withContext(Dispatchers.Main) {
                         // Exibe os dados na ListView
