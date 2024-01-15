@@ -130,6 +130,7 @@ class SocketManager(private val listener: MessageListener)  {
         if (args.isNotEmpty()) {
             val data = args[0].toString()
             listener.onOtherEvent(data)
+            Log.d("socketAPI",data)
         }
     }
 
@@ -148,6 +149,11 @@ class SocketManager(private val listener: MessageListener)  {
     fun sendRequest4( data: JSONObject ) {
         socket?.emit("joinChannel", data) // Pass callback outside the parentheses
     }
+
+    fun sendRequest5( data: JSONObject ) {
+        socket?.emit("createChannel", data) // Pass callback outside the parentheses
+    }
+
     // Function to disconnect the Socket.IO connection
     fun disconnectSocket() {
         socket?.disconnect()
