@@ -1,25 +1,39 @@
 package com.example.temax
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.temax.classes.Apartement
 import com.example.temax.classes.House
 import com.example.temax.classes.Room
+import com.example.temax.manager.Message
+import com.example.temax.manager.SocketManager
 import kotlinx.coroutines.selects.select
+import org.json.JSONObject
 import java.io.Serializable
 
-class SelectedHouse : AppCompatActivity() {
+class SelectedHouse : AppCompatActivity(), SocketManager.MessageListener {
 
     private var houseID: Int ?= 0 // Variável de classe para armazenar houseID
     private var apartementID: Int ?= 0
     private var roomID: Int ?= 0
+
+    private var userID2 = 0
+
+    private val socketManager = SocketManager(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_selected_house)
+
+        //conenct em todas as activites
+        socketManager.connectSocket()
+
 
         val selectedItem = intent.getSerializableExtra("selectedItem") as? Serializable
 
@@ -45,6 +59,7 @@ class SelectedHouse : AppCompatActivity() {
         //atribui os valores
         if (selectedItem != null) {
             if (selectedItem is House) {
+                userID2 = selectedItem.UserID
                 price = selectedItem.Price
                 description = selectedItem.Description
                 wcs = selectedItem.WCs
@@ -60,6 +75,7 @@ class SelectedHouse : AppCompatActivity() {
                 houseID = selectedItem.HouseID
             }
             if (selectedItem is Apartement) {
+                userID2 = selectedItem.UserID
                 price = selectedItem.Price
                 description = selectedItem.Description
                 wcs = selectedItem.WCs
@@ -75,6 +91,7 @@ class SelectedHouse : AppCompatActivity() {
 
             }
             if (selectedItem is Room) {
+                userID2 = selectedItem.UserID
                 price = selectedItem.Price
                 description = selectedItem.Description
                 postal_code = selectedItem.Postal_code
@@ -216,7 +233,37 @@ class SelectedHouse : AppCompatActivity() {
 
 
     fun GoToChat (view: View){
+
+        val userID = getSharedPreferences("Temax", Context.MODE_PRIVATE)
+            .getString("userId", null)?.toIntOrNull() ?: -1 // -1 é um valor padrão
+
+
+        val data = JSONObject().apply {
+            put("userID1", userID.toString()).put("userID2",userID2.toString())
+        }
+
+        //criar channel
+        socketManager.sendRequest5(data)
+
         val intent = Intent(this@SelectedHouse, ChatChannels::class.java)
         startActivityForResult(intent,1)
+
+    }
+
+    override fun onNewMessage(message: Message) {
+        TODO("Not yet implemented")
+    }
+
+    override fun userChannelsListener(data: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getChannelMessagesListener(messages: List<Message>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onOtherEvent(data: String) {
+        TODO("Not yet implemented")
+        Log.d("socketAPI",data)
     }
 }

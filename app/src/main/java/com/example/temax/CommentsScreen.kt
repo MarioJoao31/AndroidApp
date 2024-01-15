@@ -69,6 +69,24 @@ class CommentsScreen : AppCompatActivity() {
         userService = retrofit.create(UserService::class.java)
 
 
+        userService.getUserName(userID).enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                if (response.isSuccessful) {
+                    val userName = response.body()
+                    Log.d("CommentAdapter", "Nome do Usuário recebido: $userName")
+                } else if (response.code() == 404) {
+                    Log.e("CommentAdapter", "Nome do usuário não encontrado (404)")
+                } else {
+                    Log.e("CommentAdapter", "Erro ao obter o nome do usuário: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.e("CommentAdapter", "Falha ao obter o nome do usuário", t)
+            }
+        })
+
+
         Log.d("CommentsScreen", "houseID: ${houseID}")
 
         var HouseID = houseID
@@ -409,25 +427,7 @@ class CommentsScreen : AppCompatActivity() {
         })
     }
 
-    // Função para obter o nome do usuário usando o serviço Retrofit
-    private fun getUserName(userID: Int, userService: UserService) {
-        userService.getUserName(userID).enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                if (response.isSuccessful) {
-                    val userName = response.body()
-                    Log.d("CommentAdapter", "Nome do Usuário recebido: $userName")
-                } else if (response.code() == 404) {
-                    Log.e("CommentAdapter", "Nome do usuário não encontrado (404)")
-                } else {
-                    Log.e("CommentAdapter", "Erro ao obter o nome do usuário: ${response.code()}")
-                }
-            }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                Log.e("CommentAdapter", "Falha ao obter o nome do usuário", t)
-            }
-        })
-    }
 
 
 }
