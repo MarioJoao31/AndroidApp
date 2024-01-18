@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <!-- a linha a baixo permite a app a ligar a net -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -8,10 +11,64 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/house"
         android:supportsRtl="true"
         android:theme="@style/Theme.Temax"
         tools:targetApi="31">
+        <activity
+            android:name=".EditUserProfile"
+            android:exported="false" />
+        <activity
+            android:name=".ListPayments"
+            android:exported="false" />
+        <activity
+            android:name=".ChatMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChatChannels"
+            android:exported="false" />
+        <activity
+            android:name=".ServiceTop"
+            android:exported="false" />
+        <activity
+            android:name=".CommentsScreen"
+            android:exported="false" />
+        <activity
+            android:name=".PaymentScreen"
+            android:exported="false" />
+        <activity
+            android:name=".BuyServiceTopo"
+            android:exported="false" />
+        <activity
+            android:name=".DashboardUser"
+            android:exported="false" />
+        <activity
+            android:name=".StudentRentList"
+            android:exported="false" />
+        <activity
+            android:name=".SelectedHouse"
+            android:exported="false" />
+        <activity
+            android:name=".BuyPropertieListing"
+            android:exported="false" />
+        <activity
+            android:name=".RentScreen"
+            android:exported="false" />
+        <activity
+            android:name=".NotStudentSell"
+            android:exported="false" />
+        <activity
+            android:name=".NotStudentSellOrRentOrBuy"
+            android:exported="false" />
+        <activity
+            android:name=".StudentSellOrRent"
+            android:exported="false" />
+        <activity
+            android:name=".SelectTypeUser"
+            android:exported="false" />
+        <activity
+            android:name=".Register"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

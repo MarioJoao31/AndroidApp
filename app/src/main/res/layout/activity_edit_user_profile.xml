@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditUserProfile"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Título -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Editar Perfil"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Nome -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nome:"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Insira seu nome"
+        android:inputType="textPersonName"
+        android:padding="8dp" />
+
+    <!-- Contato -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Contato:"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/editTextContact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Insira seu contato"
+        android:inputType="phone"
+        android:padding="8dp" />
+
+    <!-- Password -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Password:"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Insira sua senha"
+        android:inputType="textPassword"
+        android:padding="8dp" />
+
+    <!-- Botão de Salvamento -->
+    <Button
+        android:id="@+id/btEditar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Salvar Alterações"
+        android:layout_marginTop="24dp"
+        android:textSize="16sp" />
+
+
+</LinearLayout>

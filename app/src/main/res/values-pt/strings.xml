@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Temax</string>
+    <string name="main_login">Entra</string>
+    <string name="main_registar">Regista-te</string>
+    <string name="register_button">Registar conta</string>
+    <string name="login_sucess">Login bem-sucedido!</string>
+    <string name="login_failure">Os dados estão incorretos. Tente novamente.</string>
+    <string name="network_error_message">Ocorreu um erro de rede.</string>
+    <string name="account_created">Conta criada com sucesso</string>
+    <string name="Pasword_error_message">Password Válida</string>
+    <string name="Date_error_message">Data (Deve ser neste formato \'yyyy-MM-dd\')</string>
+    <string name="Contact_error_message">Contacto Invalido</string>
+    <string name="Name_error_message">Nome não pode ser Nulo</string>
+    <string name="email_error_message">Email invalido</string>
+</resources>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SelectTypeUser"
+    android:orientation="vertical">
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/circle_button"
+        android:layout_gravity="right"
+        android:layout_marginTop="10dp"
+        android:text="Chats"
+        android:textSize="10dp"
+        android:onClick="GoToChannels"
+        />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="@drawable/circle_button"
+        android:layout_gravity="center"
+        android:layout_marginTop="75dp"
+        android:text="Estudante"
+        android:textSize="20dp"
+        android:onClick="SelectBtTypeStudent"
+        />
+
+    <ImageView
+        android:onClick="GoToDashboardUser"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/house" />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="@drawable/circle_button"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="Não Estudante"
+        android:textSize="20dp"
+        android:onClick="SelectBtTypeNotStudent"
+        />
+
+
+</LinearLayout>

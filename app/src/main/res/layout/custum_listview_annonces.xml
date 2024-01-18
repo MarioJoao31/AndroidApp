@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/image_sell_announce"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_house" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                android:textColor="#000000"
+
+                android:text="titulo" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/text_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="★"
+                android:textSize="24sp"
+                android:textColor="#FFD700"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+
+            android:text="1212313" />
+
+        <TextView
+            android:id="@+id/text_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#555555"
+            android:text="desc" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/text_fixed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#555555"
+
+            android:text="WCs: " />
+
+        <TextView
+            android:id="@+id/text_WCs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#555555"
+
+            android:text="" />
+
+        <TextView
+            android:id="@+id/text_fixed2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#555555"
+
+            android:text="    /" />
+        <TextView
+            android:id="@+id/text_fixed3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#555555"
+
+            android:text="    Area Total: " />
+        <TextView
+            android:id="@+id/text_total_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#555555"
+
+            android:text=" " />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView
+            android:id="@+id/text_fixed5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#555555"
+
+            android:text="Parking: " />
+
+        <TextView
+            android:id="@+id/text_ParkingVariable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#555555"
+
+            android:text="" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView
+            android:id="@+id/text_fixed4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#555555"
+
+            android:text="Elevador: " />
+        <TextView
+            android:id="@+id/text_elevator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#555555"
+
+            android:text="sim" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

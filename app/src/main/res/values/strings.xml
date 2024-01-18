@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Temax</string>
+    <string name="main_login">Log in</string>
+    <string name="main_registar">Register</string>
+    <string name="register_button">Register Account</string>
+    <string name="login_sucess">Sucessful Login</string>
+    <string name="login_failure">The data is incorrect. Try again later</string>
+    <string name="network_error_message">A network error has occurred.</string>
+    <string name="account_created">Account created successfully</string>
+    <string name="Pasword_error_message">Invalid Password</string>
+    <string name="Date_error_message">Date (must be in the format \'yyyy-MM-dd\')</string>
+    <string name="Contact_error_message">Invalid Contact</string>
+    <string name="Name_error_message">Name Can`t be Null</string>
+    <string name="email_error_message">Invalid Email</string>
+    <string name="ser_cobrado_um_valor_de_15" translatable="false">Será cobrado um valor de 15 €</string>
+
 </resources>
